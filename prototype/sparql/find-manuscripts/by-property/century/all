@@ -1,4 +1,4 @@
-# find manuscripts ordered by century
+# list manuscripts by century
 SELECT ?ms ?msLabel ?century ?centuryLabel
 WHERE {
 # bind query variable for property (P14)

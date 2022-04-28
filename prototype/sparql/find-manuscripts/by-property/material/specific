@@ -2,9 +2,9 @@
 SELECT ?ms ?msLabel
 WHERE {
 # bind query variable for material property (P11)
-  BIND(wdt:P11 AS ?material).
+  BIND(wdt:P11 AS ?hasMaterial).
 # statement: manuscript has material type "parchment" (Q31) 
-  ?ms ?material wd:Q31.
+  ?ms ?hasMaterial wd:Q31.
   
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
   }

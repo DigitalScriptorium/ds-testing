@@ -1,0 +1,12 @@
+# find manuscripts produced in century "X"
+SELECT ?ms ?msLabel
+WHERE {
+# bind query variable for property (P14)
+  BIND(p:P14 AS ?productionDateAsRecorded).
+# statement: manuscript has production date as recorded literal string value
+  ?ms ?productionDateAsRecorded ?productionDateString.
+# statement: production date string value has qualifier century "seventeenth century"
+  ?productionDateString pq:P26 wd:Q100.
+  
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
+  }

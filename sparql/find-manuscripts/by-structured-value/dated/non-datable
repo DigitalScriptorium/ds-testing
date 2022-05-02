@@ -1,0 +1,10 @@
+# find non-dated manuscripts
+SELECT ?ms ?msLabel
+WHERE {
+# bind query variable for dated property (P15)
+  BIND(wdt:P15 AS ?dated).
+# statement: manuscripts that are non-dated/datable (Q12)
+  ?ms ?dated wd:Q12.
+  
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
+  }

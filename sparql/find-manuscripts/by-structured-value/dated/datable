@@ -1,0 +1,10 @@
+# find dated manuscripts
+SELECT ?ms ?msLabel
+WHERE {
+# bind query variable for dated property (P15)
+  BIND(wdt:P15 AS ?dated).
+# statement: manuscripts that are dated/datable (Q11) 
+  ?ms ?dated wd:Q11.
+  
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
+  }

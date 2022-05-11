@@ -1,10 +1,11 @@
 # find manuscripts with material type "X"
-SELECT ?ms ?msLabel
+SELECT ?ms ?msLabel ?material ?materialLabel
 WHERE {
 # bind query variable for material property (P11)
   BIND(wdt:P11 AS ?hasMaterial).
 # statement: manuscript has material type "parchment" (Q31) 
-  ?ms ?hasMaterial wd:Q31.
+  ?ms ?hasMaterial ?material .
+  ?material wdt:P49 <http://vocab.getty.edu/page/aat/300011851>.
   
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
   }

@@ -1,0 +1,19 @@
+# find manuscripts associated with name "X"
+SELECT ?ms ?msLabel ?name ?nameLabel ?nameType ?nameTypeLabel
+WHERE {
+# bind query variables
+  BIND(p:P17 AS ?nameAsRecorded).
+  BIND(pq:P31 AS ?hasName).
+  BIND(wdt:P48 AS ?hasQID).
+  BIND(wdt:P42 AS ?instanceOf).
+# statement: manuscript has associated name recorded as literal string value
+  ?ms ?nameAsRecorded ?nameString .
+# statement: string value has qualifier name authority value
+  ?nameString ?hasName ?name .
+# statement: authority value has QID for "Varchi, Benedetto, 1503-1565"
+  ?name ?hasQID "Q176833"^^xsd:string .
+# statement: authority value occurs in personal or corporate wikibase name authority 
+  ?name ?instanceOf ?nameType
+  
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
+  }

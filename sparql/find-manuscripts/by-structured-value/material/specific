@@ -3,7 +3,7 @@ SELECT ?ms ?msLabel ?material ?materialLabel
 WHERE {
 # bind query variable for material property (P11)
   BIND(wdt:P11 AS ?hasMaterial).
-# statement: manuscript has material type "parchment" (Q31) 
+# statement: manuscript has material type "parchment" 
   ?ms ?hasMaterial ?material .
   ?material wdt:P49 <http://vocab.getty.edu/page/aat/300011851>.
   

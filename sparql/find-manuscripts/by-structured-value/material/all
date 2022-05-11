@@ -1,4 +1,4 @@
-# find manuscripts with material type "X"
+# find manuscripts by material type
 SELECT ?ms ?msLabel ?material ?materialLabel
 WHERE {
 # bind query variables

@@ -1,10 +1,14 @@
 # find manuscripts by subject
 SELECT ?ms ?msLabel ?subject ?subjectLabel
 WHERE {
-# bind query variable for subject property (P22)
-  BIND(wdt:P22 AS ?hasSubject).
-# statement: manuscript has subject assigned  
-  ?ms ?hasSubject ?subject .
+# bind query variables
+  BIND(p:P8 AS ?subjectAsRecorded).
+  BIND(pq:P22 AS ?hasSubject).
+  BIND(wdt:P49 AS ?hasExternalURI).
+# statement: manuscript has subject recorded as literal string value
+  ?ms ?subjectAsRecorded ?subjectString .
+# statement: string value has qualifier subject authority value
+  ?subjectString ?hasSubject ?subject .
   
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
   }

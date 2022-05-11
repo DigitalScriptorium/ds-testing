@@ -1,0 +1,16 @@
+# find manuscripts held by "X"
+SELECT ?ms ?msLabel ?institution ?institutionLabel
+WHERE {
+# bind query variables
+  BIND(p:P47 AS ?holdingInstitutionAsRecorded).
+  BIND(pq:P35 AS ?holdingInstitution).
+  BIND(wdt:P48 AS ?hasQID).
+# statement: manuscript has holding institution recorded literal string value
+  ?ms ?holdingInstitutionAsRecorded ?institutionString .
+# statement: holding institution string value is "University of Pennsylvania" 
+  ?institutionString ?holdingInstitution ?institution .
+# statement: string value has structured QID 
+  ?institution ?hasQID "Q49117"^^xsd:string.
+  
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
+  }

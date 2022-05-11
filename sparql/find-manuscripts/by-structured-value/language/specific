@@ -8,7 +8,7 @@ WHERE {
 # statement: manuscript has language recorded as literal string value
   ?ms ?languageAsRecorded ?languageString .
 # statement: string value has qualifier language authority value
-  ?languageString ?hasLanguage ?language 
+  ?languageString ?hasLanguage ?language .
 # statement: authority value has external URI value 
   ?language ?hasExternalURI <https://iso639-3.sil.org/code/fra>.
   

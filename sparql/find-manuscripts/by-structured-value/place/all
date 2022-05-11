@@ -1,10 +1,14 @@
 # find manuscripts by production place
 SELECT ?ms ?msLabel ?place ?placeLabel
 WHERE {
-# bind query variable for place property (P23)
-  BIND(wdt:P23 AS ?hasPlace).
-# statement: manuscript has production place
-  ?ms ?hasPlace ?place .
+# bind query variables
+  BIND(p:P9 AS ?placeAsRecorded).
+  BIND(pq:P23 AS ?hasPlace).
+  BIND(wdt:P49 AS ?hasExternalURI).
+# statement: manuscript has production place recorded as literal string value
+  ?ms ?productionPlaceAsRecorded ?placeString .
+# statement: string value has qualifier authority value
+  ?placeString ?hasPlace ?place .
   
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
   }

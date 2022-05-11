@@ -7,9 +7,9 @@ WHERE {
   BIND(wdt:P48 AS ?hasQID).
 # statement: manuscript has holding institution recorded literal string value
   ?ms ?holdingInstitutionAsRecorded ?institutionString .
-# statement: holding institution string value is "University of Pennsylvania" 
+# statement: string value has qualifier institution authority value
   ?institutionString ?holdingInstitution ?institution .
-# statement: string value represented by QID value
+# statement: authority value represented by QID value for "University of Pennsylvania"
   ?institution ?hasQID "Q49117"^^xsd:string.
   
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }

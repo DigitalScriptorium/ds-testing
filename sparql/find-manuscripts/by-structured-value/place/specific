@@ -1,11 +1,16 @@
 # find manuscripts produced in place "X"
 SELECT ?ms ?msLabel ?place ?placeLabel
 WHERE {
-# bind query variable for place property (P23)
-  BIND(wdt:P23 AS ?hasPlace).
-# statement: manuscript has production place "Italy"
-  ?ms ?hasPlace ?place .
-  ?place wdt:P49 <http://vocab.getty.edu/tgn/1000080>.
+# bind query variables
+  BIND(p:P9 AS ?placeAsRecorded).
+  BIND(pq:P23 AS ?hasPlace).
+  BIND(wdt:P49 AS ?hasExternalURI).
+# statement: manuscript has production place recorded as literal string value
+  ?ms ?productionPlaceAsRecorded ?placeString .
+# statement: string value has qualifier authority value
+  ?placeString ?hasPlace ?place .
+# statement: authority value is represented in TGN as URI for "Italy"
+  ?place ?hasExternalURI <http://vocab.getty.edu/tgn/1000080>.
   
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
   }

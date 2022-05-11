@@ -1,1 +1,13 @@
-
+# find manuscripts by "TITLE" with manuscript ID
+SELECT ?ms ?msLabel ?msID ?msIDLabel
+WHERE {
+# bind query variables
+  BIND(wdt:P3 AS ?titleAsRecorded).
+  BIND(wdt:P7 AS ?hasID).
+# statement: manuscript has title recorded as string value
+  ?ms ?titleAsRecorded "Anwār al-tanzīl wa-asrār al-taʼwīl."^^xsd:string .
+# statement: manuscript has manuscript ID
+  ?ms ?hasID ?msID .
+  
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
+  }

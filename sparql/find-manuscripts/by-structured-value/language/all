@@ -1,10 +1,13 @@
 # find manuscripts by language
 SELECT ?ms ?msLabel ?language ?languageLabel
 WHERE {
-# bind query variable for language property (P24)
-  BIND(wdt:P24 AS ?hasLanguage).
-# statement: manuscript contains language 
-  ?ms ?hasLanguage ?language .
+# bind query variables
+  BIND(p:P10 AS ?languageAsRecorded).
+  BIND(pq:P24 AS ?hasLanguage).
+# statement: manuscript has language recorded as literal string value
+  ?ms ?languageAsRecorded ?languageString .
+# statement: string value has qualifier language authority value
+  ?languageString ?hasLanguage ?language .
   
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
   }

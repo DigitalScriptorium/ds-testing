@@ -1,0 +1,11 @@
+# find manuscripts about subject "X"
+SELECT ?ms ?msLabel ?subject ?subjectLabel
+WHERE {
+# bind query variable for subject property (P22)
+  BIND(wdt:P22 AS ?hasSubject).
+# statement: manuscript is about "Astronomy, Arab" 
+  ?ms ?hasSubject ?subject .
+  ?subject wdt:P49 <http://id.worldcat.org/fast/819764>.
+  
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
+  }

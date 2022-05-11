@@ -1,0 +1,15 @@
+# find manuscripts with genre "X"
+SELECT ?ms ?msLabel ?genre ?genreLabel
+WHERE {
+# bind query variables
+  BIND(p:P6 AS ?genreAsRecorded).
+  BIND(pq:P21 AS ?hasGenre).
+  BIND(wdt:P49 AS ?hasExternalURI).
+# statement: manuscript has genre recorded as literal string value
+  ?ms ?genreAsRecorded ?genreString .
+# statement: string value has qualifier genre authority value
+  ?genreString ?hasGenre ?genre .
+  
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
+  }
+ORDER by ?genreLabel

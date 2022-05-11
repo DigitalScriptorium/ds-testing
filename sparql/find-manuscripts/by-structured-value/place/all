@@ -1,0 +1,11 @@
+# find manuscripts by production place
+SELECT ?ms ?msLabel ?place ?placeLabel
+WHERE {
+# bind query variable for place property (P23)
+  BIND(wdt:P23 AS ?hasPlace).
+# statement: manuscript has production place
+  ?ms ?hasPlace ?place .
+  
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
+  }
+ORDER by ?placeLabel

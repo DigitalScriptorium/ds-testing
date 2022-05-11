@@ -9,7 +9,7 @@ WHERE {
   ?ms ?holdingInstitutionAsRecorded ?institutionString .
 # statement: holding institution string value is "University of Pennsylvania" 
   ?institutionString ?holdingInstitution ?institution .
-# statement: string value has structured QID 
+# statement: string value represented by QID value
   ?institution ?hasQID "Q49117"^^xsd:string.
   
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }

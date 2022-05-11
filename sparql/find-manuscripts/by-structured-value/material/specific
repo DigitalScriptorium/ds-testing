@@ -6,7 +6,7 @@ WHERE {
   BIND(wdt:P49 AS ?hasExternalURI).
 # statement: manuscript has material type
   ?ms ?hasMaterial ?material .
-# statement: material type represented by AAT value for "parchment"
+# statement: material type is represented in AAT as URI for "parchment"
   ?material ?hasExternalURI <http://vocab.getty.edu/page/aat/300011851>.
   
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }

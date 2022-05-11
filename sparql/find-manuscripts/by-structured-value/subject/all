@@ -1,0 +1,11 @@
+# find manuscripts by subject
+SELECT ?ms ?msLabel ?subject ?subjectLabel
+WHERE {
+# bind query variable for subject property (P22)
+  BIND(wdt:P22 AS ?hasSubject).
+# statement: manuscript has subject assigned  
+  ?ms ?hasSubject ?subject .
+  
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
+  }
+ORDER by ?subjectLabel

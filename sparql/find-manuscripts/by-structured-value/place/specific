@@ -1,0 +1,11 @@
+# find manuscripts produced in place "X"
+SELECT ?ms ?msLabel ?place ?placeLabel
+WHERE {
+# bind query variable for place property (P23)
+  BIND(wdt:P23 AS ?hasPlace).
+# statement: manuscript has production place "Italy"
+  ?ms ?hasPlace ?place .
+  ?place wdt:P49 <http://vocab.getty.edu/tgn/1000080>.
+  
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
+  }

@@ -1,13 +1,16 @@
 # find manuscripts produced in century "X"
 SELECT ?ms ?msLabel ?century ?centuryLabel
 WHERE {
-# bind query variable for property (P14)
+# bind query variables
   BIND(p:P14 AS ?productionDateAsRecorded).
+  BIND(pq:P26 AS ?hasCentury).
+  BIND(wdt:P49 AS ?hasExternalURI).
 # statement: manuscript has production date as recorded literal string value
   ?ms ?productionDateAsRecorded ?productionDateString.
 # statement: production date string value has qualifier century "seventeenth century"
-  ?productionDateString pq:P26 ?century .
-  ?century wdt:P49 <http://vocab.getty.edu/aat/300404511>.
+  ?productionDateString ?hasCentury ?century .
+# statement: century is represented in AAT
+  ?century ?hasExternalURI <http://vocab.getty.edu/aat/300404511>.
   
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
   }

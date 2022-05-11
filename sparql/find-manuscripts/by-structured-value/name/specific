@@ -10,8 +10,8 @@ WHERE {
   ?ms ?nameAsRecorded ?nameString .
 # statement: string value has qualifier name authority value
   ?nameString ?hasName ?name .
-# statement: authority value has QID for "Varchi, Benedetto, 1503-1565"
-  ?name ?hasQID "Q176833"^^xsd:string .
+# statement: authority value has QID for "Ghazzālī, 1058-1111"
+  ?name ?hasQID "Q9546"^^xsd:string .
 # statement: authority value occurs in personal or corporate wikibase name authority 
   ?name ?instanceOf ?nameType
   

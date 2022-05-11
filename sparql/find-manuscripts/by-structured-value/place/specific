@@ -6,7 +6,7 @@ WHERE {
   BIND(pq:P23 AS ?hasPlace).
   BIND(wdt:P49 AS ?hasExternalURI).
 # statement: manuscript has production place recorded as literal string value
-  ?ms ?productionPlaceAsRecorded ?placeString .
+  ?ms ?placeAsRecorded ?placeString .
 # statement: string value has qualifier authority value
   ?placeString ?hasPlace ?place .
 # statement: authority value is represented in TGN as URI for "Italy"

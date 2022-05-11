@@ -7,9 +7,9 @@ WHERE {
   BIND(wdt:P49 AS ?hasExternalURI).
 # statement: manuscript has production date as recorded literal string value
   ?ms ?productionDateAsRecorded ?productionDateString.
-# statement: string value has qualifier century value
+# statement: string value has qualifier century authority value
   ?productionDateString ?hasCentury ?century .
-# statement: century value is represented in AAT as "seventeenth century"
+# statement: authority value is represented in AAT as "seventeenth century"
   ?century ?hasExternalURI <http://vocab.getty.edu/aat/300404511>.
   
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }

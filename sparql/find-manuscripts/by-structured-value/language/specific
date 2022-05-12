@@ -1,12 +1,12 @@
-# find manuscripts in language "X"
-SELECT ?ms ?msLabel ?language ?languageLabel
+# find manuscript records in language "X"
+SELECT ?record ?recordLabel ?language ?languageLabel
 WHERE {
 # bind query variables
   BIND(p:P10 AS ?languageAsRecorded).
   BIND(pq:P24 AS ?hasLanguage).
   BIND(wdt:P49 AS ?hasExternalURI).
-# statement: manuscript has language recorded as literal string value
-  ?ms ?languageAsRecorded ?languageString .
+# statement: manuscript record has language recorded as literal string value
+  ?record ?languageAsRecorded ?languageString .
 # statement: string value has qualifier language authority value
   ?languageString ?hasLanguage ?language .
 # statement: authority value has external URI value for ISO 639-3 code for "French"

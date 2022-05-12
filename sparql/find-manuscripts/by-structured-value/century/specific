@@ -5,7 +5,7 @@ WHERE {
   BIND(p:P14 AS ?productionDateAsRecorded).
   BIND(pq:P26 AS ?hasCentury).
   BIND(wdt:P49 AS ?hasExternalURI).
-# statement: manuscript has production date recorded as literal string value
+# statement: manuscript record has production date recorded as literal string value
   ?record ?productionDateAsRecorded ?productionDateString.
 # statement: string value has qualifier century authority value
   ?productionDateString ?hasCentury ?century .

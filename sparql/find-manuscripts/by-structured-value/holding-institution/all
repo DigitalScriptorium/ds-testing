@@ -1,11 +1,11 @@
-# find manuscripts by holding institution
-SELECT ?ms ?msLabel ?institution ?institutionLabel
+# find manuscript records by holding institution
+SELECT ?records ?recordsLabel ?institution ?institutionLabel
 WHERE {
 # bind query variables
   BIND(p:P47 AS ?holdingInstitutionAsRecorded).
   BIND(pq:P35 AS ?hasHoldingInstitution).
 # statement: manuscript has holding institution recorded as literal string value
-  ?ms ?holdingInstitutionAsRecorded ?institutionString .
+  ?records ?holdingInstitutionAsRecorded ?institutionString .
 # statement: string value has qualifier institution authority value
   ?institutionString ?hasHoldingInstitution ?institution .
   

@@ -1,12 +1,12 @@
-# find manuscripts by production place
-SELECT ?ms ?msLabel ?place ?placeLabel
+# find manuscript records by production place
+SELECT ?record ?recordLabel ?place ?placeLabel
 WHERE {
 # bind query variables
   BIND(p:P9 AS ?placeAsRecorded).
   BIND(pq:P23 AS ?hasPlace).
   BIND(wdt:P49 AS ?hasExternalURI).
-# statement: manuscript has production place recorded as literal string value
-  ?ms ?productionPlaceAsRecorded ?placeString .
+# statement: manuscript records has production place recorded as literal string value
+  ?record ?productionPlaceAsRecorded ?placeString .
 # statement: string value has qualifier authority value
   ?placeString ?hasPlace ?place .
   

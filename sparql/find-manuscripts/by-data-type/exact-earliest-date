@@ -1,4 +1,4 @@
-# find manuscripts by date range
+# find manuscripts by exact earliest date
 SELECT ?ms ?msLabel ?earlyDate ?earlyDateLabel ?lateDate ?lateDateLabel
 WHERE {
 # bind query variables
@@ -7,9 +7,10 @@ WHERE {
   BIND(pq:P29 AS ?hasLatestDate).
 # statement: manuscript has manuscript has production date recorded as literal string value
   ?ms ?productionDateAsRecorded ?productionDateString .
-# statement: string value has qualifier values for earliest and latest dates
+# statement: string value has qualifier values for earliest and latest dates (datetime values)
   ?productionDateString ?hasEarliestDate ?earlyDate .
   ?productionDateString ?hasLatestDate ?lateDate .
+# filter datetime values by year equal to 1700
   FILTER (YEAR(?earlyDate) = 1700) .
  
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }

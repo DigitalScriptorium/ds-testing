@@ -1,11 +1,11 @@
-# find manuscripts with material type "X"
-SELECT ?ms ?msLabel ?material ?materialLabel
+# find manuscript records with material type "X"
+SELECT ?record ?recordLabel ?material ?materialLabel
 WHERE {
 # bind query variables
   BIND(wdt:P11 AS ?hasMaterial).
   BIND(wdt:P49 AS ?hasExternalURI).
 # statement: manuscript has material type
-  ?ms ?hasMaterial ?material .
+  ?record ?hasMaterial ?material .
 # statement: material type is represented in AAT as URI for "parchment"
   ?material ?hasExternalURI <http://vocab.getty.edu/page/aat/300011851>.
   

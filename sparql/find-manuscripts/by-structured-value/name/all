@@ -1,12 +1,12 @@
 # find manuscripts by associated name
-SELECT DISTINCT ?ms ?msLabel ?name ?nameLabel ?nameType ?nameTypeLabel
+SELECT DISTINCT ?record ?recordLabel ?name ?nameLabel ?nameType ?nameTypeLabel
 WHERE {
 # bind query variables
   BIND(p:P17 AS ?nameAsRecorded).
   BIND(pq:P31 AS ?hasName).
   BIND(wdt:P42 AS ?instanceOf).
 # statement: manuscript has associated name recorded as literal string value
-  ?ms ?nameAsRecorded ?nameString .
+  ?record ?nameAsRecorded ?nameString .
 # statement: string value has qualifier name authority value
   ?nameString ?hasName ?name .
 # statement: authority value occurs in personal or corporate wikibase name authority 

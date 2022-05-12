@@ -5,7 +5,7 @@ WHERE {
   BIND(p:P9 AS ?placeAsRecorded).
   BIND(pq:P23 AS ?hasPlace).
   BIND(wdt:P49 AS ?hasExternalURI).
-# statement: manuscript records has production place recorded as literal string value
+# statement: manuscript record has production place recorded as literal string value
   ?record ?productionPlaceAsRecorded ?placeString .
 # statement: string value has qualifier authority value
   ?placeString ?hasPlace ?place .

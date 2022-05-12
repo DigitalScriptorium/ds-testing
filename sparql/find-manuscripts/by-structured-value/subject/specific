@@ -1,12 +1,12 @@
-# find manuscripts about subject "X"
-SELECT ?ms ?msLabel ?subject ?subjectLabel
+# find manuscript records about subject "X"
+SELECT ?record ?recordLabel ?subject ?subjectLabel
 WHERE {
 # bind query variables
   BIND(p:P8 AS ?subjectAsRecorded).
   BIND(pq:P22 AS ?hasSubject).
   BIND(wdt:P49 AS ?hasExternalURI).
-# statement: manuscript has subject recorded as literal string value
-  ?ms ?subjectAsRecorded ?subjectString .
+# statement: manuscript record has subject recorded as literal string value
+  ?record ?subjectAsRecorded ?subjectString .
 # statement: string value has qualifier subject authority value
   ?subjectString ?hasSubject ?subject .  
 # statement: authority value is represented in FAST as URI for "Astronomy, Arab" 

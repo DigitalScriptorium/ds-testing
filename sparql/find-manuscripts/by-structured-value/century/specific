@@ -1,12 +1,12 @@
-# find manuscripts produced in century "X"
-SELECT ?ms ?msLabel ?century ?centuryLabel
+# find manuscript records for ms produced in century "X"
+SELECT ?record ?recordLabel ?century ?centuryLabel
 WHERE {
 # bind query variables
   BIND(p:P14 AS ?productionDateAsRecorded).
   BIND(pq:P26 AS ?hasCentury).
   BIND(wdt:P49 AS ?hasExternalURI).
 # statement: manuscript has production date recorded as literal string value
-  ?ms ?productionDateAsRecorded ?productionDateString.
+  ?record ?productionDateAsRecorded ?productionDateString.
 # statement: string value has qualifier century authority value
   ?productionDateString ?hasCentury ?century .
 # statement: authority value is represented in AAT as URI for "seventeenth century"

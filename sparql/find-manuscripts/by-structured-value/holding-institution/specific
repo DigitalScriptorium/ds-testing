@@ -5,7 +5,7 @@ WHERE {
   BIND(p:P47 AS ?holdingInstitutionAsRecorded).
   BIND(pq:P35 AS ?hasHoldingInstitution).
   BIND(wdt:P48 AS ?hasQID).
-# statement: manuscript has holding institution recorded as literal string value
+# statement: manuscript record has holding institution recorded as literal string value
   ?record ?holdingInstitutionAsRecorded ?institutionString .
 # statement: string value has qualifier institution authority value
   ?institutionString ?hasHoldingInstitution ?institution .

@@ -4,7 +4,7 @@ WHERE {
 # bind query variables
   BIND(wdt:P11 AS ?hasMaterial).
   BIND(wdt:P49 AS ?hasExternalURI).
-# statement: manuscript has material type
+# statement: manuscript record has material type
   ?record ?hasMaterial ?material .
   
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }

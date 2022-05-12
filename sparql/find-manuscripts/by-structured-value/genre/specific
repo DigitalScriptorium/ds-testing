@@ -5,7 +5,7 @@ WHERE {
   BIND(p:P6 AS ?genreAsRecorded).
   BIND(pq:P21 AS ?hasGenre).
   BIND(wdt:P49 AS ?hasExternalURI).
-# statement: manuscript has genre recorded as literal string value
+# statement: manuscript record has genre recorded as literal string value
   ?record ?genreAsRecorded ?genreString .
 # statement: string value has qualifier genre authority value
   ?genreString ?hasGenre ?genre .

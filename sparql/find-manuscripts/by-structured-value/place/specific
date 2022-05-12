@@ -1,12 +1,12 @@
-# find manuscripts produced in place "X"
-SELECT ?ms ?msLabel ?place ?placeLabel
+# find manuscripts records produced in place "X"
+SELECT ?record ?recordLabel ?place ?placeLabel
 WHERE {
 # bind query variables
   BIND(p:P9 AS ?placeAsRecorded).
   BIND(pq:P23 AS ?hasPlace).
   BIND(wdt:P49 AS ?hasExternalURI).
-# statement: manuscript has production place recorded as literal string value
-  ?ms ?placeAsRecorded ?placeString .
+# statement: manuscript record has production place recorded as literal string value
+  ?record ?placeAsRecorded ?placeString .
 # statement: string value has qualifier authority value
   ?placeString ?hasPlace ?place .
 # statement: authority value is represented in TGN as URI for "Italy"

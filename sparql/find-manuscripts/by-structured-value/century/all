@@ -1,11 +1,11 @@
-# list manuscripts by century
-SELECT ?ms ?msLabel ?century ?centuryLabel
+# list manuscript records by century
+SELECT ?record ?recordLabel ?century ?centuryLabel
 WHERE {
 # bind query variables
   BIND(p:P14 AS ?productionDateAsRecorded).
   BIND(pq:P26 AS ?hasCentury).
 # statement: manuscript has production date as recorded literal string value
-  ?ms ?productionDateAsRecorded ?productionDateString .
+  ?record ?productionDateAsRecorded ?productionDateString .
 # statement: string value has qualifier century authority value
   ?productionDateString ?hasCentury ?century .
   

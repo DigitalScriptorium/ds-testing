@@ -1,11 +1,11 @@
-# find manuscripts by material type
-SELECT ?ms ?msLabel ?material ?materialLabel
+# find manuscript records by material type
+SELECT ?record ?recordLabel ?material ?materialLabel
 WHERE {
 # bind query variables
   BIND(wdt:P11 AS ?hasMaterial).
   BIND(wdt:P49 AS ?hasExternalURI).
 # statement: manuscript has material type
-  ?ms ?hasMaterial ?material .
+  ?record ?hasMaterial ?material .
   
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
   }

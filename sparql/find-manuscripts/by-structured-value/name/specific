@@ -1,4 +1,4 @@
-# find manuscripts associated with name "X"
+# find manuscript record associated with name "X"
 SELECT ?record ?recordLabel ?name ?nameLabel ?nameType ?nameTypeLabel
 WHERE {
 # bind query variables
@@ -6,7 +6,7 @@ WHERE {
   BIND(pq:P31 AS ?hasName).
   BIND(wdt:P48 AS ?hasQID).
   BIND(wdt:P42 AS ?instanceOf).
-# statement: manuscript has associated name recorded as literal string value
+# statement: manuscript record has associated name recorded as literal string value
   ?record ?nameAsRecorded ?nameString .
 # statement: string value has qualifier name authority value
   ?nameString ?hasName ?name .

@@ -11,7 +11,7 @@ WHERE {
 # statement: subject statement has subject object recorded as string value
   ?subjectStatement ?subjectAsRecorded ?subjectString .
 # statement: subject statement has qualifier for possible structured/authority value, which may have URI
-  OPTIONAL { {?subjectStatement ?hasSubject ?subject .} OPTIONAL { ?subject ?hasExternalURI ?subjectURI .} }
+  OPTIONAL { { ?subjectStatement ?hasSubject ?subject .} OPTIONAL { ?subject ?hasExternalURI ?subjectURI .} }
   
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
   }

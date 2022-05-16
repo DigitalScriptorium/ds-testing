@@ -1,15 +1,18 @@
 # find manuscript records with genre "X"
-SELECT ?record ?recordLabel ?genre ?genreLabel
+SELECT ?record ?recordLabel ?genreString ?genre ?genreLabel
 WHERE {
 # bind query variables
-  BIND(p:P6 AS ?genreAsRecorded).
+  BIND(p:P6 AS ?genreAsRecordedStatement).
+  BIND(ps:P6 AS ?genreAsRecorded).
   BIND(pq:P21 AS ?hasGenre).
   BIND(wdt:P49 AS ?hasExternalURI).
-# statement: manuscript record has genre recorded as literal string value
-  ?record ?genreAsRecorded ?genreString .
-# statement: string value has qualifier genre authority value
-  ?genreString ?hasGenre ?genre .
-# statement: authority value is represented in controlled vocabulary for "Qur'ans"
+# statement: manuscript record has statement for genre recorded as literal string value
+  ?record ?genreAsRecordedStatement ?genreStatement .
+# statement: genre statement has genre object recorded as string value
+  ?genreStatement ?genreAsRecorded ?genreString .
+# statement: genre statement has qualifier for structured/authority value
+  ?genreStatement ?hasGenre ?genre .
+# statement: authority value is represented by URI in controlled vocabulary for "Qur'ans"
   ?genre ?hasExternalURI <http://vocab.getty.edu/aat/300265128>.
   
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }

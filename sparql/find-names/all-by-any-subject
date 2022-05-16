@@ -2,7 +2,8 @@
 SELECT ?subject ?subjectLabel ?record ?recordLabel ?name ?nameLabel ?QID
 WHERE {
 # bind query variables
-  BIND(p:P17 AS ?nameAsRecorded).
+  BIND(p:P17 AS ?nameAsRecordedStatement).
+  BIND(ps:P17 AS ?nameAsRecorded).
   BIND(pq:P31 AS ?hasName).
   BIND(wdt:P48 AS ?hasQID).
 # statement: FAST ID represents structured subject value
@@ -11,12 +12,12 @@ WHERE {
   ?subject ^wdt:P22 ?subjectString .
 # statement: string value describes (P8) manuscript record
   ?subjectString ^wdt:P8 ?record .
-# statement: manuscript record has name recorded as literal string value
-  ?record ?nameAsRecorded ?nameString .
-# statement: string value has qualifier name authority value
-  ?nameString ?hasName ?name .
-# statement: authority value has linked QID
-  ?name ?hasQID ?QID .
+# statement: manuscript record has statement for name recorded as literal string value
+  ?record ?nameAsRecordedStatement ?nameStatement .
+# statement: name statement has name object recorded as string value
+  ?nameStatement ?nameAsRecorded ?nameString .
+# statement: name statement has qualifier for possible structured/authority value, which may have QID
+OPTIONAL { { ?nameStatement ?hasName ?name .} OPTIONAL { ?name ?hasQID ?QID .}}
   
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
   }

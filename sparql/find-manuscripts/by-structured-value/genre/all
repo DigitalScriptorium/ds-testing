@@ -11,7 +11,7 @@ WHERE {
 # statement: genre statement has genre object recorded as string value
   ?genreStatement ?genreAsRecorded ?genreString .
 # statement: genre statement has qualifier for possible structured/authority value, which may have URI
-  OPTIONAL { { ?genreStatement ?hasGenre ?genre .} OPTIONAL { ?genre ?hasExternalURI ?genreURI .}}
+  OPTIONAL { { ?genreStatement ?hasGenre ?genre .} OPTIONAL { ?genre ?hasExternalURI ?genreURI .} }
   
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
   }

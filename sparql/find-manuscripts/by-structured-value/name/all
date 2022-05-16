@@ -1,17 +1,22 @@
-# find manuscript record by associated name
-SELECT DISTINCT ?record ?recordLabel ?name ?nameLabel ?nameType ?nameTypeLabel
+# find manuscript records with associated names
+SELECT DISTINCT ?record ?recordLabel ?nameString ?name ?nameLabel ?role ?roleLabel ?nameType ?nameTypeLabel
 WHERE {
 # bind query variables
-  BIND(p:P17 AS ?nameAsRecorded).
+  BIND(p:P17 AS ?nameAsRecordedStatement).
+  BIND(ps:P17 As ?nameAsRecorded).
   BIND(pq:P31 AS ?hasName).
   BIND(wdt:P42 AS ?instanceOf).
-# statement: manuscript record has associated name recorded as literal string value
-  ?record ?nameAsRecorded ?nameString .
-# statement: string value has qualifier name authority value
-  ?nameString ?hasName ?name .
-# statement: authority value occurs in personal or corporate wikibase name authority 
-  ?name ?instanceOf ?nameType
+  BIND(wdt:PXX AS ?hasRole).
+  BIND(wdt:P48 AS ?hasQID).
+# statement: manuscript record has statement for name
+  ?record ?nameAsRecordedStatement ?nameStatement .
+# statement: name statement has name object recorded as string value
+  ?nameStatement ?nameAsRecorded ?nameString .
+# statement: string statement has qualifier for possible structured/authority value, which may have QID & name type
+  OPTIONAL { { ?nameStatement ?hasName ?name . } OPTIONAL { ?name ?hasQID ?QID .} OPTIONAL {?name ?instanceOf ?nameType .} }
+# statement: string statement has qualifier for possible role value 
+  OPTIONAL { ?nameStatement ?hasRole ?role . }
   
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
   }
-ORDER by ?nameLabel
+ORDER by ?recordLabel ?nameLabel

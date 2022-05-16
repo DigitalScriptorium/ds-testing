@@ -9,7 +9,7 @@ WHERE {
 # statement: manuscript record has statement for holding institution
   ?record ?holdingInstitutionAsRecordedStatement ?institutionStatement .
 # statement: institution statement has institution object as string value
-  ?institutionStatement ?holdingInstitutionAsRecorded ?institutionString
+  ?institutionStatement ?holdingInstitutionAsRecorded ?institutionString .
 # statement: institution statement has qualifier for structured/authority value
   ?institutionStatement ?hasHoldingInstitution ?institution .
 # statement: authority value has QID

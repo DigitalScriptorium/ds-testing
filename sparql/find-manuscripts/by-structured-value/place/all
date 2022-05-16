@@ -1,15 +1,18 @@
-# find manuscript records by production place
-SELECT ?record ?recordLabel ?place ?placeLabel
+# find manuscript records and associated production places
+SELECT ?record ?recordLabel ?placeString ?place ?placeLabel ?placeURI
 WHERE {
 # bind query variables
-  BIND(p:P9 AS ?placeAsRecorded).
+  BIND(p:P9 AS ?placeAsRecordedStatement).
+  BIND(ps:P9 AS ?placeAsRecorded).
   BIND(pq:P23 AS ?hasPlace).
   BIND(wdt:P49 AS ?hasExternalURI).
-# statement: manuscript record has production place recorded as literal string value
-  ?record ?productionPlaceAsRecorded ?placeString .
-# statement: string value has qualifier authority value
-  ?placeString ?hasPlace ?place .
+# statement: manuscript record has statement for production place
+  ?record ?placeAsRecordedStatement ?placeStatement .
+# statement: place statement has place object recorded as string value
+  ?placeStatement ?placeAsRecorded ?placeString .
+# statement: string value has qualifier for possible structured/authority value, which may have URI
+  OPTIONAL { { ?placeStatement ?hasPlace ?place .} OPTIONAL { ?place ?hasExternalURI ?placeURI .} }
   
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
   }
-ORDER by ?placeLabel
+ORDER by ?recordLabel ?placeLabel

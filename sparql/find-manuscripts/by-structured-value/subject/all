@@ -1,4 +1,4 @@
-# find manuscript records by subject
+# find manuscript records and associated subjects
 SELECT ?record ?recordLabel ?subjectString ?subject ?subjectLabel ?subjectURI
 WHERE {
 # bind query variables

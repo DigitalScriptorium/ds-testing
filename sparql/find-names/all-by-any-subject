@@ -23,7 +23,7 @@ WHERE {
 # statement: name statement has name object recorded as string value
   ?nameStatement ?nameAsRecorded ?nameString .
 # statement: name statement has qualifier for possible structured/authority value, which may have QID
-OPTIONAL { { ?nameStatement ?hasName ?name .} OPTIONAL { ?name ?hasQID ?QID .}}
+OPTIONAL { { ?nameStatement ?hasName ?name .} OPTIONAL { ?name ?hasQID ?QID .} }
   
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
   }

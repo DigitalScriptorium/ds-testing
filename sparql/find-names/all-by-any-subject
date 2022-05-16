@@ -2,17 +2,20 @@
 SELECT ?subject ?subjectLabel ?record ?recordLabel ?name ?nameLabel ?QID
 WHERE {
 # bind query variables
-  BIND(wdt:P8 AS ?subjectAsRecorded).
-  BIND(wdt:P22 ?hasSubject).
+  BIND(p:P8 AS ?subjectAsRecordedStatement).
+  BIND(ps:P8 AS ?subjectAsRecorded).
+  BIND(pq:P22 ?hasSubject).
   BIND(wdt:P49 AS ?hasExternalURI).
   BIND(p:P17 AS ?nameAsRecordedStatement).
   BIND(ps:P17 AS ?nameAsRecorded).
   BIND(pq:P31 AS ?hasName).
   BIND(wdt:P48 AS ?hasQID).
-# statement: manuscript record has subject recorded as literal string value 
-  ?record ?subjectAsRecorded ?subjectString .
-# statement: string value has qualifier subject authority value
-  ?subjectString ?hasSubject ?subject . 
+# statement: manuscript record has statement for subject recorded as literal string value 
+  ?record ?subjectAsRecordedStatement ?subjectStatement .
+# statement: subject statement has subject object recorded as string value
+  ?subjectStatement ?subjectAsRecorded ?subjectString .
+# statement: subject statement has qualifier for subject authority value
+  ?subjectStatement ?hasSubject ?subject . 
 # statement: authority value is represented in FAST as URI for "Astronomy, Arab" 
   ?subject ?hasExternalURI <http://id.worldcat.org/fast/819764>.
 # statement: manuscript record has statement for name recorded as literal string value

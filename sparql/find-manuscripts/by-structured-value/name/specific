@@ -1,19 +1,25 @@
 # find manuscript record associated with name "X"
-SELECT ?record ?recordLabel ?name ?nameLabel ?nameType ?nameTypeLabel
+SELECT ?record ?recordLabel ?nameString ?name ?nameLabel ?role ?roleLabel ?nameType ?nameTypeLabel
 WHERE {
 # bind query variables
-  BIND(p:P17 AS ?nameAsRecorded).
+  BIND(p:P17 AS ?nameAsRecordedStatement).
+  BIND(ps:P17 As ?nameAsRecorded).
   BIND(pq:P31 AS ?hasName).
-  BIND(wdt:P48 AS ?hasQID).
   BIND(wdt:P42 AS ?instanceOf).
-# statement: manuscript record has associated name recorded as literal string value
-  ?record ?nameAsRecorded ?nameString .
-# statement: string value has qualifier name authority value
-  ?nameString ?hasName ?name .
-# statement: authority value has QID for "Ghazzālī, 1058-1111"
+  BIND(wdt:PXX AS ?hasRole).
+  BIND(wdt:P48 AS ?hasQID).
+# statement: manuscript record has statement for name
+  ?record ?nameAsRecordedStatement ?nameStatement .
+# statement: name statement has name object recorded as string value
+  ?nameStatement ?nameAsRecorded ?nameString .
+# statement: name statement has qualifier for structured/authority value
+  ?nameStatement ?hasName ?name .
+# statement: name statement has qualifier for role value
+  ?nameStatement ?hasRole ?role .
+# statement: authority value has QID
   ?name ?hasQID "Q9546"^^xsd:string .
 # statement: authority value occurs in personal or corporate wikibase name authority 
-  ?name ?instanceOf ?nameType
+  ?name ?instanceOf ?nameType .
   
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
   }

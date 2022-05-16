@@ -1,12 +1,14 @@
-# find manuscript records by material type
-SELECT ?record ?recordLabel ?material ?materialLabel
+# find manuscript records and associated material types
+SELECT ?record ?recordLabel ?material ?materialLabel ?materialURI
 WHERE {
 # bind query variables
   BIND(wdt:P11 AS ?hasMaterial).
   BIND(wdt:P49 AS ?hasExternalURI).
 # statement: manuscript record has material type
   ?record ?hasMaterial ?material .
+# statement: material type represented by URI
+  ?material ?hasExternalURI ?materialURI .
   
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
   }
-ORDER by ?materialLabel
+ORDER by ?recordLabel ?materialLabel

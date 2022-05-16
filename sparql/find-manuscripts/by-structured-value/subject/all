@@ -1,5 +1,5 @@
 # find manuscript records by subject
-SELECT ?record ?recordLabel ?subject ?subjectLabel ?subjectURI
+SELECT ?record ?recordLabel ?subjectString ?subject ?subjectLabel ?subjectURI
 WHERE {
 # bind query variables
   BIND(p:P8 AS ?subjectAsRecordedStatement).

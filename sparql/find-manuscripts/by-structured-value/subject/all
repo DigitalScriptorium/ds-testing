@@ -1,15 +1,18 @@
 # find manuscript records by subject
-SELECT ?record ?recordLabel ?subject ?subjectLabel
+SELECT ?record ?recordLabel ?subject ?subjectLabel ?subjectURI
 WHERE {
 # bind query variables
-  BIND(p:P8 AS ?subjectAsRecorded).
+  BIND(p:P8 AS ?subjectAsRecordedStatement).
+  BIND(ps:P8 AS ?subjectAsRecorded).
   BIND(pq:P22 AS ?hasSubject).
   BIND(wdt:P49 AS ?hasExternalURI).
-# statement: manuscript record has subject recorded as literal string value
-  ?record ?subjectAsRecorded ?subjectString .
-# statement: string value has qualifier subject authority value
-  ?subjectString ?hasSubject ?subject .
+# statement: manuscript record has statement for subject
+  ?record ?subjectAsRecordedStatement ?subjectStatement .
+# statement: subject statement has subject object recorded as string value
+  ?subjectStatement ?subjectAsRecorded ?subjectString .
+# statement: subject statement has qualifier for possible structured/authority value, which may have URI
+  OPTIONAL { {?subjectStatement ?hasSubject ?subject .} OPTIONAL { ?subject ?hasExternalURI ?subjectURI .} }
   
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
   }
-ORDER by ?subjectLabel
+ORDER by ?recordLabel ?subjectLabel

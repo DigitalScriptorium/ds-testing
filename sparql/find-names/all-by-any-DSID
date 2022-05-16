@@ -1,5 +1,5 @@
 # find names associated with all manuscripts
-SELECT ?msLabel ?recordLabel ?nameLabel ?QID
+SELECT ?ms ?msLabel ?record ?recordLabel ?name ?nameLabel ?QID
 WHERE {
 # bind query variables
   BIND(p:P17 AS ?nameAsRecorded).

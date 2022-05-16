@@ -1,14 +1,20 @@
-# find manuscript records by holding institution
-SELECT ?records ?recordsLabel ?institution ?institutionLabel
+# find manuscript records and associated holding institutions
+SELECT ?record ?recordLabel ?institutionString ?institution ?institutionLabel ?QID
 WHERE {
 # bind query variables
-  BIND(p:P47 AS ?holdingInstitutionAsRecorded).
+  BIND(p:P47 AS ?holdingInstitutionAsRecordedStatement).
+  BIND(ps:P47 AS ?holdingInstitutionAsRecorded).
   BIND(pq:P35 AS ?hasHoldingInstitution).
-# statement: manuscript record has holding institution recorded as literal string value
-  ?records ?holdingInstitutionAsRecorded ?institutionString .
-# statement: string value has qualifier institution authority value
-  ?institutionString ?hasHoldingInstitution ?institution .
+  BIND(wdt:P48 AS ?hasQID).
+# statement: manuscript record has statement for holding institution
+  ?record ?holdingInstitutionAsRecordedStatement ?institutionStatement .
+# statement: institution statement has institution object as string value
+  ?institutionStatement ?holdingInstitutionAsRecorded ?institutionString .
+# statement: institution statement has qualifier for structured/authority value
+  ?institutionStatement ?hasHoldingInstitution ?institution .
+# statement: authority value has QID
+  ?institution ?hasQID ?QID.
   
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
   }
-ORDER by ?languageLabel
+ORDER by ?recordLabel ?institutionLabel

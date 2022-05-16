@@ -1,15 +1,17 @@
 # find names associated with all manuscripts
-SELECT ?ms ?msLabel ?record ?recordLabel ?name ?nameLabel ?QID
+SELECT ?ms ?DSID ?record ?recordLabel ?name ?nameLabel ?QID
 WHERE {
 # bind query variables
+  BIND(wdt:P1 AS ?hasDSID).
+  BIND(wdt:P7 AS ?describes).
   BIND(p:P17 AS ?nameAsRecordedStatement).
   BIND(ps:P17 AS ?nameAsRecorded).
   BIND(pq:P31 AS ?hasName).
   BIND(wdt:P48 AS ?hasQID).
+# statement: manuscript record describes manuscript
+  ?record ?describes ?ms .
 # statement: DSID is assigned to (P1) manuscript
-  ?DSID ^wdt:P1 ?ms .
-# statement: manuscript is described in (P7) manuscript record 
-  ?ms ^wdt:P7 ?record .
+  ?ms ?hasDSID ?DSID .
 # statement: manuscript record has statement for name recorded as literal string value
   ?record ?nameAsRecordedStatement ?nameStatement .
 # statement: name statement has name object recorded as string value

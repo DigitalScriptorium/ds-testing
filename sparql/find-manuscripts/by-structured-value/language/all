@@ -1,14 +1,18 @@
-# find manuscript records by language
-SELECT ?record ?recordLabel ?language ?languageLabel
+# find manuscript records and associated languages
+SELECT ?record ?recordLabel ?languageString ?language ?languageLabel ?ISO
 WHERE {
 # bind query variables
-  BIND(p:P10 AS ?languageAsRecorded).
+  BIND(p:P10 AS ?languageAsRecordedStatement).
+  BIND(ps:P10 AS ?languageAsRecorded).
   BIND(pq:P24 AS ?hasLanguage).
-# statement: manuscript record has language recorded as literal string value
-  ?record ?languageAsRecorded ?languageString .
-# statement: string value has qualifier language authority value
-  ?languageString ?hasLanguage ?language .
+  BIND(wdt:P49 AS ?hasExternalURI).
+# statement: manuscript record has statement for language
+  ?record ?languageAsRecordedStatement ?languageStatement .
+# statement: language statement has language object recorded as string value
+  ?languageStatement ?languageAsRecorded ?languageString .
+# statement: language statement has has qualifier for possible structured/authority value, which may have URI
+  OPTIONAL { { ?languageStatement ?hasLanguage ?language .} OPTIONAL { ?language ?hasExternalURI ?ISO .} }
   
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
   }
-ORDER by ?languageLabel
+ORDER by ?recordLabel ?languageLabel

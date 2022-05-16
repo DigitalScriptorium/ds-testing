@@ -2,16 +2,19 @@
 SELECT ?subject ?subjectLabel ?record ?recordLabel ?name ?nameLabel ?QID
 WHERE {
 # bind query variables
+  BIND(wdt:P8 AS ?subjectAsRecorded).
+  BIND(wdt:P22 ?hasSubject).
+  BIND(wdt:P49 AS ?hasExternalURI).
   BIND(p:P17 AS ?nameAsRecordedStatement).
   BIND(ps:P17 AS ?nameAsRecorded).
   BIND(pq:P31 AS ?hasName).
   BIND(wdt:P48 AS ?hasQID).
-# statement: FAST ID represents structured subject value
-  <FAST ID here> ^wdt:P49 ?subject .
-# statement: structured value is qualifier for (P22) literal string value subject
-  ?subject ^wdt:P22 ?subjectString .
-# statement: string value describes (P8) manuscript record
-  ?subjectString ^wdt:P8 ?record .
+# statement: manuscript record has subject recorded as literal string value 
+  ?record ?subjectAsRecorded ?subjectString .
+# statement: string value has qualifier subject authority value
+  ?subjectString ?hasSubject ?subject . 
+# statement: authority value is represented in FAST as URI for "Astronomy, Arab" 
+  ?subject ?hasExternalURI <http://id.worldcat.org/fast/819764>.
 # statement: manuscript record has statement for name recorded as literal string value
   ?record ?nameAsRecordedStatement ?nameStatement .
 # statement: name statement has name object recorded as string value

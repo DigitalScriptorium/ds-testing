@@ -1,0 +1,30 @@
+# find names associated with manuscripts described by any subject
+SELECT DISTINCT ?subject ?subjectLabel ?subjectURI ?subjectString ?record ?recordLabel ?nameString ?name ?nameLabel ?QID
+WHERE {
+# bind query variables
+  BIND(p:P8 AS ?subjectAsRecordedStatement).
+  BIND(ps:P8 AS ?subjectAsRecorded).
+  BIND(pq:P22 AS ?hasSubject).
+  BIND(wdt:P49 AS ?hasExternalURI).
+  BIND(p:P17 AS ?nameAsRecordedStatement).
+  BIND(ps:P17 AS ?nameAsRecorded).
+  BIND(pq:P31 AS ?hasName).
+  BIND(wdt:P48 AS ?hasQID).
+# statement: manuscript record has statement for subject recorded as literal string value 
+  ?record ?subjectAsRecordedStatement ?subjectStatement .
+# statement: subject statement has subject object recorded as string value
+  ?subjectStatement ?subjectAsRecorded ?subjectString .
+# statement: subject statement has qualifier for subject authority value...
+  OPTIONAL { { ?subjectStatement ?hasSubject ?subject .}
+# statement: ...and authority value is represented by URI
+  OPTIONAL { ?subject ?hasExternalURI ?subjectURI.} }
+# statement: manuscript record has statement for name recorded as literal string value
+  ?record ?nameAsRecordedStatement ?nameStatement .
+# statement: name statement has name object recorded as string value
+  ?nameStatement ?nameAsRecorded ?nameString .
+# statement: name statement has qualifier for possible structured/authority value, which may have QID
+  OPTIONAL { { ?nameStatement ?hasName ?name .} OPTIONAL { ?name ?hasQID ?QID .} }
+  
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
+  }
+ORDER by ?recordLabel ?nameLabel

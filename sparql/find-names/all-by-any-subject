@@ -4,7 +4,7 @@ WHERE {
 # bind query variables
   BIND(p:P8 AS ?subjectAsRecordedStatement).
   BIND(ps:P8 AS ?subjectAsRecorded).
-  BIND(pq:P22 ?hasSubject).
+  BIND(pq:P22 AS ?hasSubject).
   BIND(wdt:P49 AS ?hasExternalURI).
   BIND(p:P17 AS ?nameAsRecordedStatement).
   BIND(ps:P17 AS ?nameAsRecorded).

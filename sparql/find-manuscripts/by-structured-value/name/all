@@ -1,5 +1,5 @@
 # find manuscript records with associated names
-SELECT DISTINCT ?record ?recordLabel ?nameString ?roleLabel ?name ?nameLabel ?roleLabel ?nameTypeLabel
+SELECT DISTINCT ?record ?recordLabel ?nameString ?roleLabel ?name ?nameLabel ?QID ?nameTypeLabel
 WHERE {
 # bind query variables
   BIND(p:P17 AS ?nameAsRecordedStatement).

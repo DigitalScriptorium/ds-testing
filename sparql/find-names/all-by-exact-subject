@@ -1,5 +1,5 @@
 # find names associated with manuscripts described by subject "X"
-SELECT ?subject ?subjectLabel ?record ?recordLabel ?nameString ?name ?nameLabel ?QID
+SELECT ?subject ?subjectLabel ?subjectURI ?subjectString ?record ?recordLabel ?nameString ?name ?nameLabel ?QID
 WHERE {
 # bind query variables
   BIND(p:P8 AS ?subjectAsRecordedStatement).

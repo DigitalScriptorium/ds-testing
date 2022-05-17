@@ -1,0 +1,30 @@
+# find names associated with manuscript records describing any production place
+SELECT ?place ?placeLabel ?placeURI ?placeString ?record ?recordLabel ?nameString ?name ?nameLabel ?QID
+WHERE {
+# bind query variables
+  BIND(p:P9 AS ?placeAsRecordedStatement).
+  BIND(ps:P9 AS ?placeAsRecorded).
+  BIND(pq:P23 AS ?hasPlace).
+  BIND(wdt:P49 AS ?hasExternalURI).
+  BIND(p:P17 AS ?nameAsRecordedStatement).
+  BIND(ps:P17 AS ?nameAsRecorded).
+  BIND(pq:P31 AS ?hasName).
+  BIND(wdt:P48 AS ?hasQID).
+# statement: manuscript record has statement for place recorded as literal string value 
+  ?record ?placeAsRecordedStatement ?placeStatement .
+# statement: place statement has place object recorded as string value
+  ?placeStatement ?placeAsRecorded ?placeString .
+# statement: place statement has qualifier for place authority value...
+  OPTIONAL { { ?placeStatement ?hasPlace ?place .}
+# statement: ...and authority value is represented by URI
+  OPTIONAL { ?place ?hasExternalURI ?placeURI.} }
+# statement: manuscript record has statement for name recorded as literal string value
+  ?record ?nameAsRecordedStatement ?nameStatement .
+# statement: name statement has name object recorded as string value
+  ?nameStatement ?nameAsRecorded ?nameString .
+# statement: name statement has qualifier for possible structured/authority value, which may have QID
+OPTIONAL { { ?nameStatement ?hasName ?name .} OPTIONAL { ?name ?hasQID ?QID .} }
+  
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
+  }
+ORDER by ?recordLabel ?nameLabel

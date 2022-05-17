@@ -1,21 +1,22 @@
 # find manuscript records with associated names
-SELECT DISTINCT ?record ?recordLabel ?nameString ?name ?nameLabel ?role ?roleLabel ?nameType ?nameTypeLabel
+SELECT DISTINCT ?record ?recordLabel ?nameString ?roleLabel ?name ?nameLabel ?roleLabel ?nameTypeLabel
 WHERE {
 # bind query variables
   BIND(p:P17 AS ?nameAsRecordedStatement).
   BIND(ps:P17 As ?nameAsRecorded).
   BIND(pq:P31 AS ?hasName).
+  BIND(pq:P34 AS ?hasRole).
   BIND(wdt:P42 AS ?instanceOf).
-  BIND(wdt:P34 AS ?hasRole).
   BIND(wdt:P48 AS ?hasQID).
 # statement: manuscript record has statement for name
   ?record ?nameAsRecordedStatement ?nameStatement .
 # statement: name statement has name object recorded as string value
   ?nameStatement ?nameAsRecorded ?nameString .
+# statement: string statement has qualifier for possible role value 
+  ?nameStatement ?hasRole ?role .
 # statement: string statement has qualifier for possible structured/authority value, which may have QID & name type
   OPTIONAL { { ?nameStatement ?hasName ?name . } OPTIONAL { ?name ?hasQID ?QID .} OPTIONAL {?name ?instanceOf ?nameType .} }
-# statement: string statement has qualifier for possible role value 
-  OPTIONAL { ?nameStatement ?hasRole ?role . }
+
   
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
   }

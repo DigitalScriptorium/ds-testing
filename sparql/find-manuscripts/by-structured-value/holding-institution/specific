@@ -1,13 +1,22 @@
 # find manuscript records held by "X"
-SELECT ?record ?recordLabel ?institutionString ?institution ?institutionLabel
+SELECT ?record ?recordLabel ?DSID ?DSIDLabel ?institutionalID ?institution ?institutionLabel ?QID
 WHERE {
 # bind query variables
+  BIND(wdt:P7 AS ?describedManuscript).
+  BIND(wdt:P2 AS ?manuscriptHolding).
+  BIND(wdt:P36 AS ?hasID).
   BIND(p:P47 AS ?holdingInstitutionAsRecordedStatement).
   BIND(ps:P47 AS ?holdingInstitutionAsRecorded).
   BIND(pq:P35 AS ?hasHoldingInstitution).
   BIND(wdt:P48 AS ?hasQID).
-# statement: manuscript record has statement for holding institution
-  ?record ?holdingInstitutionAsRecordedStatement ?institutionStatement .
+# statement: manuscript record has described manuscript (DSID)
+  ?record ?describedManuscript ?DSID .
+# statement: manuscript (DSID) has statement for holding
+  ?DSID ?manuscriptHolding ?holding .
+# statement: holding has institutional ID
+  ?holding ?hasID ?institutionalID .
+# statement: holding has holding institution as recorded
+  ?holding ?holdingInstitutionAsRecordedStatement ?institutionStatement .
 # statement: institution statement has institution object as string value
   ?institutionStatement ?holdingInstitutionAsRecorded ?institutionString .
 # statement: institution statement has qualifier for structured/authority value

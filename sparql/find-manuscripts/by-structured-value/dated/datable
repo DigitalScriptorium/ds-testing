@@ -1,10 +1,24 @@
 # find records for dated manuscripts
-SELECT ?record ?recordLabel
+SELECT ?record ?recordLabel ?dateString ?yearEarlyDate ?yearLateDate
 WHERE {
-# bind query variable for dated property (P15)
+# bind query variables
   BIND(wdt:P15 AS ?dated).
-# statement: manuscripts that are dated/datable (Q11) 
+  BIND(p:P14 AS ?productionDateAsRecordedStatement).
+  BIND(ps:P14 AS ?productionDateString).
+  BIND(pq:P28 AS ?earliestDate).
+  BIND(pq:P29 AS ?latestDate).
+  BIND(year(?earlyDate) AS ?yearEarlyDate).
+  BIND(year(?lateDate) AS ?yearLateDate).
+# statement: manuscript records for ms that are dated/datable (Q11)
   ?record ?dated wd:Q11.
-  
+# statement: manuscripts records with date statement
+  ?record ?productionDateAsRecordedStatement ?dateStatement .
+# statement: date statement has date object recorded as string value
+  ?dateStatement ?productionDateString ?dateString .
+# statement: date statement has qualifier for earliest date in range
+  ?dateStatement ?earliestDate ?earlyDate .
+#statement: date statement has qualifier for latest date in range
+  ?dateStatement ?latestDate ?lateDate .
+            
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
   }

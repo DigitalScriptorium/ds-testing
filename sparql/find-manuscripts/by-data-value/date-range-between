@@ -1,4 +1,4 @@
-# find manuscript records by date range
+# find manuscript records between date range
 SELECT ?record ?recordLabel ?yearEarlyDate ?yearLateDate
 WHERE {
 # bind query variables

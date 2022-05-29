@@ -1,4 +1,4 @@
-# find manuscript records for manuscripts produced before exact late date
+# find manuscript records for manuscripts produced before exact latest date
 SELECT ?record ?recordLabel ?yearEarlyDate ?yearLateDate
 WHERE {
 # bind query variables

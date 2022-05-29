@@ -1,10 +1,12 @@
 # find manuscript records by exact earliest date
-SELECT ?record ?recordLabel ?earlyDate ?earlyDateLabel ?lateDate ?lateDateLabel
+SELECT ?record ?recordLabel ?yearEarlyDate ?yearLateDate
 WHERE {
 # bind query variables
   BIND(p:P14 AS ?productionDateAsRecorded).
   BIND(pq:P28 AS ?hasEarliestDate).
   BIND(pq:P29 AS ?hasLatestDate).
+  BIND(year(?earlyDate) AS ?yearEarlyDate).
+  BIND(year(?lateDate) AS ?yearLateDate).
 # statement: manuscript record has manuscript has production date recorded as literal string value
   ?record ?productionDateAsRecorded ?productionDateString .
 # statement: string value has qualifier values for earliest and latest dates (datetime values)

@@ -5,8 +5,8 @@ WHERE {
   BIND(p:P17 AS ?nameAsRecordedStatement).
   BIND(ps:P17 As ?nameAsRecorded).
   BIND(pq:P31 AS ?hasName).
+  BIND(pq:P34 AS ?hasRole).
   BIND(wdt:P42 AS ?instanceOf).
-  BIND(wdt:P34 AS ?hasRole).
   BIND(wdt:P48 AS ?hasQID).
 # statement: manuscript record has statement for name
   ?record ?nameAsRecordedStatement ?nameStatement .

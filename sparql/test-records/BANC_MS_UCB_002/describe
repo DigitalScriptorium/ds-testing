@@ -3,13 +3,10 @@ DESCRIBE ?record
 WHERE {
 # bind query variables
   BIND(wdt:P7 AS ?describes).
-  BIND(wdt:P1 AS ?hasDSID).
   BIND(wdt:P2 AS ?hasHoldingInfo).
   BIND(wdt:P36 AS ?hasID).
 # statement: manuscript record describes manuscript
   ?record ?describes ?manuscript .
-# statement: manuscript has DS ID
-  ?manuscript ?hasDSID ?DSID .
 # statement: manuscript has holding information
   ?manuscript ?hasHoldingInfo ?holding .
 # statement: holding information has institutional ID

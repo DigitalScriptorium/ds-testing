@@ -20,3 +20,4 @@ WHERE {
   ?holding ?hasInstitutionAsRecorded ?holdingInstitutionStatement .
 # statement: holding institution statement has qualifier for authority value
   ?holdingInstitutionStatement ?namedHoldingInstitution ?holdingInstitution .
+}

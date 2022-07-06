@@ -1,0 +1,42 @@
+# find manuscript record associated with details about Kansas MS A19
+SELECT ?record ?recordLabel ?DSID ?placeLabel ?languageLabel ?nameLabel ?roleLabel
+WHERE {
+# bind query variables
+  BIND(wdt:P7 AS ?describes).
+  BIND(wdt:P1 AS ?hasDSID).
+  BIND(p:P9 AS ?hasPlaceStatement).
+  BIND(pq:P23 AS ?hasPlace).
+  BIND(p:P10 AS ?hasLanguageStatement).
+  BIND(pq:P24 AS ?hasLanguage).
+  BIND(p:P17 AS ?hasNameStatement).
+  BIND(pq:P31 AS ?hasName).
+  BIND(pq:P34 AS ?hasRole).
+  BIND(wdt:P48 AS ?hasQID).
+  BIND(wdt:P49 AS ?hasExternalURI).
+# statement: manuscript record describes manuscript
+  ?record ?describes ?manuscript .
+# statement: manuscript has DS ID
+  ?manuscript ?hasDSID ?DSID .
+# statement: manuscript record has place statement
+  ?record ?hasPlaceStatement ?placeAsRecorded .
+# statement: place as recorded is linked to place authority
+  ?placeAsRecorded ?hasPlace ?place .
+# statement: place authority has external ID
+  ?place ?hasExternalURI <http://vocab.getty.edu/tgn/1000070> .
+# statement: manuscript record has language statement
+  ?record ?hasLanguageStatement ?languageAsRecorded .
+#statement: language as recorded is linked to language authority
+  ?languageAsRecorded ?hasLanguage ?language .
+#statement: language authority has QID
+  ?language ?hasQID "Q397"^^xsd:string .
+#statement: record has name statement
+  ?record ?hasNameStatement ?nameAsRecorded .
+#statement: name as recorded is linked to name authority
+  ?nameAsRecorded ?hasName ?name .
+#statement: name authority has QID
+  ?name ?hasQID "Q154332"^^xsd:string .
+#statement: name as recorded has role
+  ?nameAsRecorded ?hasRole ?role .
+  
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
+  }

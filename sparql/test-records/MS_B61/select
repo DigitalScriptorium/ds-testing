@@ -1,0 +1,25 @@
+# find manuscript record associated with Kansas MS B61
+SELECT ?record ?recordLabel ?DSID ?holdingInstitutionLabel
+WHERE {
+# bind query variables
+  BIND(wdt:P7 AS ?describes).
+  BIND(wdt:P1 AS ?hasDSID).
+  BIND(wdt:P2 AS ?hasHoldingInfo).
+  BIND(wdt:P36 AS ?hasID).
+  BIND(p:P47 AS ?hasInstitutionAsRecorded).
+  BIND(pq:P35 AS ?namedHoldingInstitution).
+# statement: manuscript record describes manuscript
+  ?record ?describes ?manuscript .
+# statement: manuscript has DS ID
+  ?manuscript ?hasDSID ?DSID .
+# statement: manuscript has holding information
+  ?manuscript ?hasHoldingInfo ?holding .
+# statement: holding information has institutional ID
+  ?holding ?hasID "MS B61"^^xsd:string .
+# statement: holding information has holding institution statement
+  ?holding ?hasInstitutionAsRecorded ?holdingInstitutionStatement .
+# statement: holding institution statement has qualifier for authority value
+  ?holdingInstitutionStatement ?namedHoldingInstitution ?holdingInstitution .
+  
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
+  }

@@ -1,0 +1,94 @@
+# Prefixes
+
+PREFIX wd: <https://catalog.digital-scriptorium.org/entity/>
+PREFIX wds: <https://catalog.digital-scriptorium.org/entity/statement/>
+PREFIX wdv: <https://catalog.digital-scriptorium.org/value/>
+PREFIX wdt: <https://catalog.digital-scriptorium.org/prop/direct/>
+PREFIX p: <https://catalog.digital-scriptorium.org/prop/>
+PREFIX ps: <https://catalog.digital-scriptorium.org/prop/statement/>
+PREFIX pq: <https://catalog.digital-scriptorium.org/prop/qualifier/>
+
+PREFIX schema: <http://schema.org/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+##
+# Item type bindings
+# See last items page for core data types: https://catalog.digital-scriptorium.org/wiki/Special:ItemsWithoutSitelinks
+##
+# Manuscript
+BIND(wd:Q1 ?manuscript) # manuscript
+# TODO: Former owner (Q21)
+# TODO: Scribe (Q20)
+# TODO: Artist (Q19)
+# TODO: Author (Q18)
+# TODO: Material (Authority File) (Q17)
+# TODO: Place (Authority File) (Q16)
+# TODO: Non-dated (Q15)
+# TODO: Dated (Q14)
+# TODO: Century (Authority File) (Q13)
+# TODO: Language (Authority File) (Q12)
+# TODO: Term (Authority File) (Q11)
+# TODO: Role (Authority File) (Q10)
+# TODO: Corporate (Name Authority) (Q9)
+# TODO: Personal (Name Authority) (Q8)
+# TODO: Actor (Name Authority) (Q7)
+# TODO: Standard Title (Q6)
+# TODO: Non-Current (Q5)
+# TODO: Current (Q4)
+# TODO: DS 2.0 Record (Q3)
+# TODO: Holding (Q2)
+# TODO: Manuscript (Q1)
+
+##
+# Property bindings
+# TODO: Correct the property numbers below; see https://catalog.digital-scriptorium.org/wiki/Special:ListProperties
+##
+BIND(wdt:P1 AS ?hasDSID).
+BIND(wdt:P2 AS ?hasHoldingInfo).
+BIND(wdt:P2 AS ?manuscriptHolding).
+BIND(wdt:P3 AS ?titleAsRecorded).
+BIND(p:P6 AS ?genreAsRecordedStatement).
+BIND(ps:P6 AS ?genreAsRecorded).
+BIND(wdt:P7 AS ?describedManuscript).
+BIND(wdt:P7 AS ?describes).
+BIND(wdt:P7 AS ?hasID).
+BIND(ps:P8 AS ?subjectAsRecorded).
+BIND(p:P8 AS ?subjectAsRecordedStatement).
+BIND(p:P9 AS ?hasPlaceStatement).
+BIND(p:P9 AS ?placeAsRecorded).
+BIND(ps:P9 AS ?placeAsRecorded).
+BIND(p:P9 AS ?placeAsRecordedStatement).
+BIND(p:P10 AS ?hasLanguageStatement).
+BIND(p:P10 AS ?languageAsRecorded).
+BIND(ps:P10 AS ?languageAsRecorded).
+BIND(p:P10 AS ?languageAsRecordedStatement).
+BIND(wdt:P11 AS ?hasMaterial).
+BIND(ps:P14 AS ?productionDateString).
+BIND(p:P14 AS ?productionDateAsRecorded).
+BIND(p:P14 AS ?productionDateAsRecordedStatement).
+BIND(wdt:P15 AS ?dated).
+BIND(ps:P17 AS ?nameAsRecorded).
+BIND(ps:P17 As ?nameAsRecorded).
+BIND(p:P17 AS ?hasNameStatement).
+BIND(p:P17 AS ?nameAsRecordedStatement).
+BIND(pq:P21 AS ?hasGenre).
+BIND(pq:P22 AS ?hasSubject).
+BIND(pq:P23 AS ?hasPlace).
+BIND(pq:P24 AS ?hasLanguage).
+BIND(pq:P26 AS ?hasCentury).
+BIND(pq:P28 AS ?earliestDate).
+BIND(pq:P28 AS ?hasEarliestDate).
+BIND(pq:P29 AS ?hasLatestDate).
+BIND(pq:P29 AS ?latestDate).
+BIND(pq:P31 AS ?hasName).
+BIND(pq:P34 AS ?hasRole).
+BIND(pq:P35 AS ?hasHoldingInstitution).
+BIND(pq:P35 AS ?namedHoldingInstitution).
+BIND(wdt:P36 AS ?hasID).
+BIND(wdt:P42 AS ?instanceOf).
+BIND(p:P47 AS ?hasInstitutionAsRecorded).
+BIND(p:P47 AS ?holdingInstitutionAsRecordedStatement).
+BIND(ps:P47 AS ?holdingInstitutionAsRecorded).
+BIND(wdt:P48 AS ?hasQID).
+BIND(wdt:P49 AS ?hasExternalURI).

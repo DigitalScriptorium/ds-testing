@@ -45,6 +45,67 @@ BIND(wd:Q1 ?manuscript) # manuscript
 # TODO: Correct the property numbers below; see https://catalog.digital-scriptorium.org/wiki/Special:ListProperties
 ##
 BIND(wdt:P1 AS ?hasDSID).
+BIND(wdt:P2 AS ?manuscriptHolding).
+BIND(wdt:P3 AS ?describedManuscript).
+BIND(p:P4 AS ?holdingInstitutionStatement).
+BIND(ps:P4 AS ?holdingInstitutionAsRecorded).
+BIND(pq:P5 AS ?holdingInstitutionInAuthority).
+BIND(wdt:P6 AS ?holdingStatus).
+BIND(wdt:P7 AS ?hasInstitutionalID).
+BIND(wdt:P8 AS ?hasShelfmark).
+BIND(wdt:P9 AS ?linkToInstitutionalRecord).
+BIND(p:P10 AS ?titleStatement).
+BIND(ps:P10 AS ?titleAsRecorded).
+BIND(pq:P11 AS ?standardTitle).
+BIND(wdt:P12 AS ?uniformTitleAsRecorded).
+BIND(pq:P13 AS ?titleInOriginalScript).
+BIND(p:P14 AS ?nameStatement).
+BIND(ps:P14 AS ?nameAsRecorded).
+BIND(pq:P15 AS ?role).
+BIND(wdt:P16 AS ?instanceOf).
+BIND(pq:P17 AS ?nameInAuthority).
+BIND(p:P18 AS ?subjectStatement).
+BIND(ps:P18 AS ?subjectAsRecorded).
+BIND(p:P19 AS ?genreStatement).
+BIND(ps:P19 AS ?genreAsRecorded).
+BIND(pq:P20 AS ?termInAuthority).
+BIND(p:P21 AS ?languageStatement).
+BIND(ps:P21 AS ?languageAsRecorded).
+BIND(pq:P22 AS ?languageInAuthority).
+BIND(p:P23 AS ?dateStatement).
+BIND(ps:P23 AS ?dateAsRecorded).
+BIND(pq:P24 AS ?centuryInAuthority).
+BIND(pq:P25 AS ?century).
+BIND(wdt:P26 AS ?dated).
+BIND(p:P27 AS ?placeStatement).
+BIND(ps:P27 AS ?placeAsRecorded).
+BIND(pq:P28 AS ?placeInAuthority).
+BIND(wdt:P29 AS ?physicalDescription).
+BIND(p:P30 AS ?materialStatement).
+BIND(ps:P30 AS ?materialAsRecorded).
+BIND(pq:P31 AS ?materialInAuthority).
+BIND(wdt:P32 AS ?note).
+BIND(wdt:P33 AS ?acknowledgements).
+BIND(wdt:P34 AS ?dateAdded).
+BIND(wdt:P35 AS ?dateLastUpdated).
+BIND(pq:P36 AS ?latestDate).
+BIND(pq:p37 AS ?earliestDate).
+BIND(wdt:P38 AS ?startTime).
+BIND(wdt:P39 AS ?endTime).
+BIND(wdt:P40 AS ?externalID).
+BIND(wdt:P41 AS ?iiifManifest).
+BIND(wdt:P42 AS ?hasQID).
+BIND(wdt:P43 AS ?hasViafID).
+BIND(wdt:P44 AS ?externalURI).
+BIND(wdt:P45 AS ?equivalentProperty).
+BIND(wdt:P46 AS ?formatterURL).
+BIND(wdt:P47 AS ?subclassOf). 
+
+
+
+
+
+BIND(wdt:P1 AS ?hasDSID).
 BIND(wdt:P2 AS ?hasHoldingInfo).
 BIND(wdt:P2 AS ?manuscriptHolding).
 BIND(wdt:P3 AS ?titleAsRecorded).

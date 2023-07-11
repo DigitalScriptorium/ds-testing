@@ -1,0 +1,30 @@
+PREFIX wd: <https://catalog.digital-scriptorium.org/entity/>
+PREFIX wds: <https://catalog.digital-scriptorium.org/entity/statement/>
+PREFIX wdv: <https://catalog.digital-scriptorium.org/value/>
+PREFIX wdt: <https://catalog.digital-scriptorium.org/prop/direct/>
+PREFIX p: <https://catalog.digital-scriptorium.org/prop/>
+PREFIX ps: <https://catalog.digital-scriptorium.org/prop/statement/>
+PREFIX pq: <https://catalog.digital-scriptorium.org/prop/qualifier/>
+
+PREFIX schema: <http://schema.org/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+# find manuscript records and associated languages
+SELECT ?record ?recordLabel ?languageString ?languageLabel ?QID
+WHERE {
+# bind query variables
+  BIND(p:P21 AS ?languageAsRecordedStatement).
+  BIND(ps:P21 AS ?languageAsRecorded).
+  BIND(pq:P22 AS ?languageInAuthority).
+  BIND(wdt:P42 AS ?hasQID).
+# statement: manuscript record has statement for language
+  ?record ?languageAsRecordedStatement ?languageStatement .
+# statement: language statement has language object recorded as string value
+  ?languageStatement ?languageAsRecorded ?languageString .
+# statement: language statement has qualifier for possible structured/authority value, which may have QID
+  OPTIONAL {{ ?languageStatement ?languageInAuthority ?language .} { ?language ?hasQID ?QID .}}
+  
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
+  }
+ORDER by ?recordLabel ?languageLabel

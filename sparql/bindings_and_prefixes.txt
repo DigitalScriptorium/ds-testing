@@ -40,10 +40,10 @@ BIND(wd:Q1 ?manuscript) # manuscript
 # TODO: Holding (Q2)
 # TODO: Manuscript (Q1)
 
-##
+
 # Property bindings
-# TODO: Correct the property numbers below; see https://catalog.digital-scriptorium.org/wiki/Special:ListProperties
-##
+## See https://catalog.digital-scriptorium.org/wiki/Special:ListProperties
+
 BIND(wdt:P1 AS ?hasDSID).
 BIND(wdt:P2 AS ?manuscriptHolding).
 BIND(wdt:P3 AS ?describedManuscript).

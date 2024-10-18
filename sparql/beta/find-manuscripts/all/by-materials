@@ -1,0 +1,38 @@
+# prefixes
+PREFIX wd: <https://catalog.digital-scriptorium.org/entity/>
+PREFIX wds: <https://catalog.digital-scriptorium.org/entity/statement/>
+PREFIX wdv: <https://catalog.digital-scriptorium.org/value/>
+PREFIX wdt: <https://catalog.digital-scriptorium.org/prop/direct/>
+PREFIX p: <https://catalog.digital-scriptorium.org/prop/>
+PREFIX ps: <https://catalog.digital-scriptorium.org/prop/statement/>
+PREFIX pq: <https://catalog.digital-scriptorium.org/prop/qualifier/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+# find manuscript records with materials description
+SELECT ?record ?recordLabel ?materialString (GROUP_CONCAT(?materialLabel;separator="|") as ?materials) (GROUP_CONCAT(?externalID;separator="|") as ?externalIDs)
+WHERE {
+# bind query variables
+  BIND(p:P30 AS ?materialAsRecordedStatement).
+  BIND(ps:P30 AS ?materialAsRecorded).
+  BIND(pq:P31 AS ?hasMaterial).
+  BIND(wdt:P44 AS ?hasExternalURI).
+# statement: manuscript record has statement for material
+  ?record ?materialAsRecordedStatement ?materialStatement .
+# statement: material statement has material object recorded as string value
+  ?materialStatement ?materialAsRecorded ?materialString .
+# statement: material statement has qualifier for structured/authority value
+# statement: authority value is represented by URI in external controlled vocabulary
+  OPTIONAL {
+  ?materialStatement ?hasMaterial ?material .
+  ?material ?hasExternalURI ?externalID .
+    }
+
+# return English language labels
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en".
+    ?record rdfs:label ?recordLabel .
+    ?material rdfs:label ?materialLabel .
+  }
+  }
+GROUP BY ?record ?recordLabel ?materialString
+ORDER BY ?recordLabel

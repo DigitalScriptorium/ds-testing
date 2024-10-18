@@ -1,0 +1,42 @@
+# prefixes
+PREFIX wd: <https://catalog.digital-scriptorium.org/entity/>
+PREFIX wds: <https://catalog.digital-scriptorium.org/entity/statement/>
+PREFIX wdv: <https://catalog.digital-scriptorium.org/value/>
+PREFIX wdt: <https://catalog.digital-scriptorium.org/prop/direct/>
+PREFIX p: <https://catalog.digital-scriptorium.org/prop/>
+PREFIX ps: <https://catalog.digital-scriptorium.org/prop/statement/>
+PREFIX pq: <https://catalog.digital-scriptorium.org/prop/qualifier/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+# find manuscript records with holding institution information
+SELECT ?record ?recordLabel ?holdingInstitutionLabel ?shelfmark ?link
+WHERE {
+# bind query variables
+  BIND(wdt:P3 AS ?describes).
+  BIND(wdt:P2 AS ?hasHoldingInformation).
+  BIND(p:P5 AS ?holdingInstitutionAsRecordedStatement).
+  BIND(pq:P4 AS ?hasHoldingInstitution).
+  BIND(wdt:P8 AS ?hasShelfmark).
+  BIND(wdt:P9 AS ?hasLink).
+
+# statement: manuscript record describes manuscript object
+  ?record ?describes ?manuscript .
+# statement: manuscript object has holding information
+  ?manuscript ?hasHoldingInformation ?holdingInformation .
+# statement: holding information has statement for holding institution
+  ?holdingInformation ?holdingInstitutionAsRecordedStatement ?holdingInstitutionStatement .
+# statement: holding institution statement has qualifier for structured/authority value
+  ?holdingInstitutionStatement ?hasHoldingInstitution ?holdingInstitution .
+# statement: holding information has shelfmark
+  ?holdingInformation ?hasShelfmark ?shelfmark .
+# statement: holding information may have link to online catalog record
+  OPTIONAL {
+    ?holdingInformation ?hasLink ?link .
+    }
+
+# return English language labels
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en".
+  }
+  }
+ORDER BY ?recordLabel

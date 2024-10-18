@@ -1,0 +1,45 @@
+# prefixes
+PREFIX wd: <https://catalog.digital-scriptorium.org/entity/>
+PREFIX wds: <https://catalog.digital-scriptorium.org/entity/statement/>
+PREFIX wdv: <https://catalog.digital-scriptorium.org/value/>
+PREFIX wdt: <https://catalog.digital-scriptorium.org/prop/direct/>
+PREFIX p: <https://catalog.digital-scriptorium.org/prop/>
+PREFIX ps: <https://catalog.digital-scriptorium.org/prop/statement/>
+PREFIX pq: <https://catalog.digital-scriptorium.org/prop/qualifier/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT
+  # find values for the following declared variables matching the below WHERE pattern
+?record
+  # a link to a DS record
+?recordLabel
+  # the name/label of the DS record
+?string
+  # the string value as recorded in the original catalog record
+?authority
+  # a link to the authority record to which the string value has been reconciled
+?authorityLabel
+  # a label for the the authority record in the DS database
+#?roleLabel
+  # where applicable, a label for role information (un-comment roleLabel variable when querying name data to get role information)
+
+WHERE
+  # the patterns or conditions that need to be met to return values for the above variables
+  {
+    ?record p:P14 ?stringStatement .
+	  # identifies records with statements with corresponding property (change P-value for as recorded value to be queried)
+    ?stringStatement ps:P14 ?string .
+	  # identifies statements that have strings with corresponding property (change P-value for as recorded value to be queried)
+    FILTER NOT EXISTS { ?stringStatement pq:P17 ?authority . }
+	  # identifies those statements which have not been enriched with authority values (change P-value for authority file value to be queried)
+    #OPTIONAL { ?stringStatement pq:P15 ?role . }
+	  # only used for name data, un-comment optional clause when querying name data
+  
+    SERVICE wikibase:label {
+    bd:serviceParam wikibase:language "en" .
+      # allows English language labels to be returned for Wikibase items
+  }
+}
+ORDER BY ASC (?string)
+	# this sorts the results alphabetically by as recorded string values

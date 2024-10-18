@@ -1,0 +1,36 @@
+# prefixes
+PREFIX wd: <https://catalog.digital-scriptorium.org/entity/>
+PREFIX wds: <https://catalog.digital-scriptorium.org/entity/statement/>
+PREFIX wdv: <https://catalog.digital-scriptorium.org/value/>
+PREFIX wdt: <https://catalog.digital-scriptorium.org/prop/direct/>
+PREFIX p: <https://catalog.digital-scriptorium.org/prop/>
+PREFIX ps: <https://catalog.digital-scriptorium.org/prop/statement/>
+PREFIX pq: <https://catalog.digital-scriptorium.org/prop/qualifier/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+# find manuscript records for manuscripts produced in a given century or centuries
+SELECT ?record ?recordLabel ?dateString (GROUP_CONCAT(?centuryLabel;separator="|") as ?centuries)
+WHERE {
+# set variable value for century or centuries to be queried
+  VALUES ?century { wd:Q95 wd:Q96 } # thirteenth and fourteenth centuries
+# bind query variables
+  BIND(p:P23 AS ?dateAsRecordedStatement).
+  BIND(ps:P23 AS ?dateAsRecorded).
+  BIND(pq:P24 AS ?hasCentury).
+
+# statement: manuscript record has statement for date of production
+  ?record ?dateAsRecordedStatement ?dateStatement .
+# statement: date statement has date object recorded as string value
+  ?dateStatement ?dateAsRecorded ?dateString .
+# statement: date statement has qualifier for structured/authority value
+  ?dateStatement ?hasCentury ?century .
+
+# return English language labels
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en".
+    ?record rdfs:label ?recordLabel .
+    ?century rdfs:label ?centuryLabel .
+  }
+  }
+GROUP BY ?record ?recordLabel ?dateString
+ORDER BY ?recordLabel

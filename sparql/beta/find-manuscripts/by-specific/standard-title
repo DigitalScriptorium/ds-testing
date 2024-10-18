@@ -1,0 +1,39 @@
+# prefixes
+PREFIX wd: <https://catalog.digital-scriptorium.org/entity/>
+PREFIX wds: <https://catalog.digital-scriptorium.org/entity/statement/>
+PREFIX wdv: <https://catalog.digital-scriptorium.org/value/>
+PREFIX wdt: <https://catalog.digital-scriptorium.org/prop/direct/>
+PREFIX p: <https://catalog.digital-scriptorium.org/prop/>
+PREFIX ps: <https://catalog.digital-scriptorium.org/prop/statement/>
+PREFIX pq: <https://catalog.digital-scriptorium.org/prop/qualifier/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+# find manuscript records for manuscripts with particular standard title(s)
+SELECT ?record ?recordLabel ?titleString ?uniformTitleString (GROUP_CONCAT(?standardTitleLabel;separator="|") as ?standardTitles)
+WHERE {
+# set variable value for standard title or titles to be queried
+VALUES ?standardTitle { wd:Q6034 wd:Q1389 wd:Q1347 wd:Q1437 wd:Q665 } # Gospels, Gospel of Matthew, Gospel of Mark, Gospel of Luke, Gospel of John
+# bind query variables
+  BIND(p:P10 AS ?titleAsRecordedStatement).
+  BIND(ps:P10 AS ?titleAsRecorded).
+  BIND(ps:P12 AS ?uniformTitleAsRecorded).
+  BIND(pq:P11 AS ?hasStandardTitle).
+
+# statement: manuscript record has statement for title as recorded
+  ?record ?titleAsRecordedStatement ?titleStatement .
+# statement: title statement has title object recorded as string value
+  ?titleStatement ?titleAsRecorded ?titleString .
+# statement: title statement has qualifier for structured/authority value
+  ?titleStatement ?hasStandardTitle ?standardTitle .
+# statement: record may have uniform title recorded
+  OPTIONAL { ?record ?uniformTitleAsRecorded ?uniformTitleString . }
+
+# return English language labels
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en".
+    ?record rdfs:label ?recordLabel .
+    ?standardTitle rdfs:label ?standardTitleLabel .
+  }
+  }
+GROUP BY ?record ?recordLabel ?titleString ?uniformTitleString
+ORDER BY ?recordLabel

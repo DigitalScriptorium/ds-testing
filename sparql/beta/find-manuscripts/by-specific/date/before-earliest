@@ -1,0 +1,38 @@
+# prefixes
+PREFIX wd: <https://catalog.digital-scriptorium.org/entity/>
+PREFIX wds: <https://catalog.digital-scriptorium.org/entity/statement/>
+PREFIX wdv: <https://catalog.digital-scriptorium.org/value/>
+PREFIX wdt: <https://catalog.digital-scriptorium.org/prop/direct/>
+PREFIX p: <https://catalog.digital-scriptorium.org/prop/>
+PREFIX ps: <https://catalog.digital-scriptorium.org/prop/statement/>
+PREFIX pq: <https://catalog.digital-scriptorium.org/prop/qualifier/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+# find manuscript records by earliest date
+SELECT ?record ?recordLabel ?dateString ?earliestDate ?latestDate
+WHERE {
+# bind query variables
+  BIND(p:P23 AS ?dateAsRecordedStatement).
+  BIND(ps:P23 AS ?dateAsRecorded).
+  BIND(pq:P37 AS ?hasEarliestDate).
+  BIND(pq:P36 AS ?hasLatestDate).
+# render datetime values as years
+  BIND(year(?earlyDate) AS ?earliestDate).
+  BIND(year(?lateDate) AS ?latestDate).
+
+# statement: manuscript record has statement for date of production
+  ?record ?dateAsRecordedStatement ?dateStatement .
+# statement: manuscript record has statement for date of production
+  ?dateStatement ?dateAsRecorded ?dateString .
+# statement: date statement has qualifier values for earliest and latest dates (datetime values)
+  ?dateStatement ?hasEarliestDate ?earlyDate .
+  ?dateStatement ?hasLatestDate ?lateDate .
+# filter datetime values by less than 1066
+  FILTER (YEAR(?earlyDate) < 1066) .
+
+# return English language labels
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]".
+  }
+  }
+ORDER BY ?latestDate ?recordLabel

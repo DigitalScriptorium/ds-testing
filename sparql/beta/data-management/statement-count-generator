@@ -1,0 +1,25 @@
+# prefixes
+PREFIX wd: <https://catalog.digital-scriptorium.org/entity/>
+PREFIX wds: <https://catalog.digital-scriptorium.org/entity/statement/>
+PREFIX wdv: <https://catalog.digital-scriptorium.org/value/>
+PREFIX wdt: <https://catalog.digital-scriptorium.org/prop/direct/>
+PREFIX p: <https://catalog.digital-scriptorium.org/prop/>
+PREFIX ps: <https://catalog.digital-scriptorium.org/prop/statement/>
+PREFIX pq: <https://catalog.digital-scriptorium.org/prop/qualifier/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT (COUNT(?string) AS ?stringCount)
+  # declared variable that will be counted and passed to another variable to display as a number
+
+WHERE {
+  ?stringStatement ps:P10 ?string .
+    # use "as recorded" property P-value for the data you want to count
+  
+    SERVICE wikibase:label {
+    bd:serviceParam wikibase:language "en" .
+      # allows English language labels to be returned for Wikibase items
+  }
+}
+GROUP BY (?stringCount)
+  # this sorts the results by number, and is necessary for COUNT clauses

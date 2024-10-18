@@ -1,0 +1,38 @@
+# prefixes
+PREFIX wd: <https://catalog.digital-scriptorium.org/entity/>
+PREFIX wds: <https://catalog.digital-scriptorium.org/entity/statement/>
+PREFIX wdv: <https://catalog.digital-scriptorium.org/value/>
+PREFIX wdt: <https://catalog.digital-scriptorium.org/prop/direct/>
+PREFIX p: <https://catalog.digital-scriptorium.org/prop/>
+PREFIX ps: <https://catalog.digital-scriptorium.org/prop/statement/>
+PREFIX pq: <https://catalog.digital-scriptorium.org/prop/qualifier/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+# find manuscript records with place of production recorded
+SELECT ?record ?recordLabel ?placeString (GROUP_CONCAT(?placeLabel;separator="|") as ?places) (GROUP_CONCAT(?externalID;separator="|") as ?externalIDs)
+WHERE {
+# bind query variables
+  BIND(p:P27 AS ?placeAsRecordedStatement).
+  BIND(ps:P27 AS ?placeAsRecorded).
+  BIND(pq:P28 AS ?hasPlace).
+  BIND(wdt:P44 AS ?hasExternalID).
+# statement: manuscript record has statement for place of production
+  ?record ?placeAsRecordedStatement ?placeStatement .
+# statement: place statement has place object recorded as string value
+  ?placeStatement ?placeAsRecorded ?placeString .
+# statement: place statement may have qualifier for structured/authority value
+# statement: authority value is represented by URI in external controlled vocabulary
+  OPTIONAL {
+  ?placeStatement ?hasPlace ?place .
+  ?place ?hasExternalID ?externalID .
+    }
+
+# return English language labels
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en".
+    ?record rdfs:label ?recordLabel .
+    ?place rdfs:label ?placeLabel .
+  }
+  }
+GROUP BY ?record ?recordLabel ?placeString
+ORDER BY ?recordLabel

@@ -1,0 +1,38 @@
+# prefixes
+PREFIX wd: <https://catalog.digital-scriptorium.org/entity/>
+PREFIX wds: <https://catalog.digital-scriptorium.org/entity/statement/>
+PREFIX wdv: <https://catalog.digital-scriptorium.org/value/>
+PREFIX wdt: <https://catalog.digital-scriptorium.org/prop/direct/>
+PREFIX p: <https://catalog.digital-scriptorium.org/prop/>
+PREFIX ps: <https://catalog.digital-scriptorium.org/prop/statement/>
+PREFIX pq: <https://catalog.digital-scriptorium.org/prop/qualifier/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+# find manuscript records with genre terms
+SELECT ?record ?recordLabel ?genreString (GROUP_CONCAT(?termLabel;separator="|") as ?terms) (GROUP_CONCAT(?externalID;separator="|") as ?externalIDs)
+WHERE {
+# bind query variables
+  BIND(p:P18 AS ?genreAsRecordedStatement).
+  BIND(ps:P18 AS ?genreAsRecorded).
+  BIND(pq:P20 AS ?hasTerm).
+  BIND(wdt:P44 AS ?hasExternalURI).
+# statement: manuscript record has statement for genre
+  ?record ?genreAsRecordedStatement ?genreStatement .
+# statement: genre statement has genre object recorded as string value
+  ?genreStatement ?genreAsRecorded ?genreString .
+# statement: genre statement may have qualifier for structured/authority value
+# statement: authority value is represented by URI in external controlled vocabulary
+  OPTIONAL {
+  ?genreStatement ?hasTerm ?term .
+  ?term ?hasExternalURI ?externalID .
+    }
+
+# return English language labels
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en".
+    ?record rdfs:label ?recordLabel .
+    ?term rdfs:label ?termLabel .
+  }
+  }
+GROUP BY ?record ?recordLabel ?genreString
+ORDER BY ?recordLabel

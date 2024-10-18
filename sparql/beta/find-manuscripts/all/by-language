@@ -1,3 +1,4 @@
+# prefixes
 PREFIX wd: <https://catalog.digital-scriptorium.org/entity/>
 PREFIX wds: <https://catalog.digital-scriptorium.org/entity/statement/>
 PREFIX wdv: <https://catalog.digital-scriptorium.org/value/>
@@ -5,26 +6,36 @@ PREFIX wdt: <https://catalog.digital-scriptorium.org/prop/direct/>
 PREFIX p: <https://catalog.digital-scriptorium.org/prop/>
 PREFIX ps: <https://catalog.digital-scriptorium.org/prop/statement/>
 PREFIX pq: <https://catalog.digital-scriptorium.org/prop/qualifier/>
-
-PREFIX schema: <http://schema.org/>
 PREFIX wikibase: <http://wikiba.se/ontology#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-# find manuscript records and associated languages
-SELECT ?record ?recordLabel ?languageString ?languageLabel ?QID
+# find manuscript records with languages recorded
+SELECT ?record ?recordLabel ?languageString (GROUP_CONCAT(?languageLabel;separator="|") as ?languages) (GROUP_CONCAT(?externalID;separator="|") as ?externalIDs)
 WHERE {
 # bind query variables
   BIND(p:P21 AS ?languageAsRecordedStatement).
   BIND(ps:P21 AS ?languageAsRecorded).
-  BIND(pq:P22 AS ?languageInAuthority).
-  BIND(wdt:P42 AS ?hasQID).
+  BIND(pq:P22 AS ?hasLanguage).
+  BIND(wdt:P42 AS ?hasWikidataQID).
 # statement: manuscript record has statement for language
   ?record ?languageAsRecordedStatement ?languageStatement .
 # statement: language statement has language object recorded as string value
   ?languageStatement ?languageAsRecorded ?languageString .
-# statement: language statement has qualifier for possible structured/authority value, which may have QID
-  OPTIONAL {{ ?languageStatement ?languageInAuthority ?language .} { ?language ?hasQID ?QID .}}
+# statement: language statement may have qualifier for structured/authority value
+# statement: authority value is represented by URI in external controlled vocabulary
+  OPTIONAL {
+  ?languageStatement ?hasLanguage ?language .
+  ?language ?hasWikidataQID ?QID .
+    }
   
-  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]". }
+# render QIDs as URLs
+  BIND(CONCAT("https://wikidata.org/entity/",?QID) AS ?externalID)
+
+# return English language labels
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en".
+    ?record rdfs:label ?recordLabel .
+    ?language rdfs:label ?languageLabel .
   }
-ORDER by ?recordLabel ?languageLabel
+  }
+GROUP BY ?record ?recordLabel ?languageString
+ORDER BY ?recordLabel

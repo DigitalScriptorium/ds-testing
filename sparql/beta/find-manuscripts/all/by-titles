@@ -1,0 +1,37 @@
+# prefixes
+PREFIX wd: <https://catalog.digital-scriptorium.org/entity/>
+PREFIX wds: <https://catalog.digital-scriptorium.org/entity/statement/>
+PREFIX wdv: <https://catalog.digital-scriptorium.org/value/>
+PREFIX wdt: <https://catalog.digital-scriptorium.org/prop/direct/>
+PREFIX p: <https://catalog.digital-scriptorium.org/prop/>
+PREFIX ps: <https://catalog.digital-scriptorium.org/prop/statement/>
+PREFIX pq: <https://catalog.digital-scriptorium.org/prop/qualifier/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+# find manuscript records with title information
+SELECT ?record ?recordLabel ?titleString ?uniformTitleString (GROUP_CONCAT(?standardTitleLabel;separator="|") as ?standardTitles)
+WHERE {
+# bind query variables
+  BIND(p:P10 AS ?titleAsRecordedStatement)
+  BIND(ps:P10 AS ?titleAsRecorded).
+  BIND(wdt:P12 AS ?uniformTitleAsRecorded).
+  BIND(pq:P11 AS ?hasStandardTitle).
+
+# statement: manuscript record has statement for title
+  ?record ?titleAsRecordedStatement ?titleStatement .
+# statement: title statement has title object recorded as string value
+  ?titleStatement ?titleAsRecorded ?titleString .
+# statement: manuscript record may have statement for uniform title
+  OPTIONAL { ?record ?uniformTitleAsRecorded ?uniformTitleString . }
+# statement: title statement may have qualifier for standard title value
+  OPTIONAL { ?titleStatement ?hasStandardTitle ?standardTitle . }
+
+# return English language labels
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en".
+    ?record rdfs:label ?recordLabel .
+    ?standardTitle rdfs:label ?standardTitleLabel .
+  }
+  }
+GROUP BY ?record ?recordLabel ?titleString ?uniformTitleString
+ORDER BY ?recordLabel

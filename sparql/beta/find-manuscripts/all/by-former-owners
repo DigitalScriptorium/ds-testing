@@ -1,0 +1,44 @@
+# prefixes
+PREFIX wd: <https://catalog.digital-scriptorium.org/entity/>
+PREFIX wds: <https://catalog.digital-scriptorium.org/entity/statement/>
+PREFIX wdv: <https://catalog.digital-scriptorium.org/value/>
+PREFIX wdt: <https://catalog.digital-scriptorium.org/prop/direct/>
+PREFIX p: <https://catalog.digital-scriptorium.org/prop/>
+PREFIX ps: <https://catalog.digital-scriptorium.org/prop/statement/>
+PREFIX pq: <https://catalog.digital-scriptorium.org/prop/qualifier/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+# find manuscript records with former owners recorded
+SELECT ?record ?recordLabel ?nameString (GROUP_CONCAT(?nameLabel;separator="|") as ?formerOwners) (GROUP_CONCAT(?externalID;separator="|") as ?externalIDs)
+WHERE {
+# bind query variables
+  BIND(p:P14 AS ?nameAsRecordedStatement).
+  BIND(pq:P15 AS ?hasRole).
+  BIND(ps:P14 AS ?nameAsRecorded).
+  BIND(pq:P17 AS ?hasName).
+  BIND(wdt:P42 AS ?hasWikidataQID).
+# statement: manuscript record has statement for associated name
+  ?record ?nameAsRecordedStatement ?nameStatement .
+# statement: associated name has role of former owner
+  ?nameStatement ?hasRole wd:Q21 .
+# statement: name statement has name object recorded as string value
+  ?nameStatement ?nameAsRecorded ?nameString .
+# statement: name statement has qualifier for structured/authority value
+# statement: authority value is represented by URI in external controlled vocabulary
+  OPTIONAL {
+  ?nameStatement ?hasName ?name .
+  ?name ?hasWikidataQID ?QID .
+    }
+  
+# render QIDs as URLs
+  BIND(CONCAT("https://wikidata.org/entity/",?QID) AS ?externalID)
+
+# return English language labels
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en".
+    ?record rdfs:label ?recordLabel .
+    ?name rdfs:label ?nameLabel .
+  }
+  }
+GROUP BY ?record ?recordLabel ?nameString
+ORDER BY ?recordLabel

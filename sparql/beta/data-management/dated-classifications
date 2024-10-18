@@ -1,0 +1,40 @@
+# prefixes
+PREFIX wd: <https://catalog.digital-scriptorium.org/entity/>
+PREFIX wds: <https://catalog.digital-scriptorium.org/entity/statement/>
+PREFIX wdv: <https://catalog.digital-scriptorium.org/value/>
+PREFIX wdt: <https://catalog.digital-scriptorium.org/prop/direct/>
+PREFIX p: <https://catalog.digital-scriptorium.org/prop/>
+PREFIX ps: <https://catalog.digital-scriptorium.org/prop/statement/>
+PREFIX pq: <https://catalog.digital-scriptorium.org/prop/qualifier/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+# find holding and dated information for manuscripts with DS records
+SELECT 
+?record
+?holdingLabel
+?link
+?recordLabel
+?datedStatusLabel
+(GROUP_CONCAT(?dateRecorded;separator="|") as ?datesAsRecorded)
+
+WHERE
+{
+# statement: record is an instance of a DS record
+  ?record wdt:P16 wd:Q3 .
+# statements: record may have a date recorded and may have a dated status
+  OPTIONAL { ?record wdt:P23 ?dateRecorded }
+  OPTIONAL { ?record wdt:P26 ?datedStatus }
+# statement: record describes manuscript object
+  ?record wdt:P3 ?ms .
+# statement: manuscript object has holding information
+  ?ms wdt:P2 ?holding .
+# statement: holding information may have link to online institutional record
+  OPTIONAL { ?holding wdt:P9 ?link }
+
+# return English language labels
+SERVICE wikibase:label {
+    bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en" . }
+  }
+GROUP BY ?record ?holdingLabel ?link ?recordLabel ?datedStatusLabel
+ORDER BY DESC (?datedStatusLabel)

@@ -1,0 +1,53 @@
+# prefixes
+PREFIX wd: <https://catalog.digital-scriptorium.org/entity/>
+PREFIX wds: <https://catalog.digital-scriptorium.org/entity/statement/>
+PREFIX wdv: <https://catalog.digital-scriptorium.org/value/>
+PREFIX wdt: <https://catalog.digital-scriptorium.org/prop/direct/>
+PREFIX p: <https://catalog.digital-scriptorium.org/prop/>
+PREFIX ps: <https://catalog.digital-scriptorium.org/prop/statement/>
+PREFIX pq: <https://catalog.digital-scriptorium.org/prop/qualifier/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT
+(?ds_recordLabel as ?ds_record_name)
+(?ds_record as ?ds_record_url)
+?ds_catalog_url
+(?dsidLabel as ?ds_id)
+(?holdingInstLabel as ?holding_institution)
+?shelfmark
+?link_to_inst_record
+?date_added_to_DS
+?date_updated_in_DS
+
+WHERE {
+  ?ds_record wdt:P16 wd:Q3 ;
+             wdt:P34 ?date_added_to_DS ;
+             wdt:P35 ?date_updated_in_DS ;
+             wdt:P3 ?dsid ;
+             rdfs:label ?ds_recordLabel .             
+  ?dsid wdt:P2 ?holding ;
+        rdfs:label ?dsidLabel .
+  ?holding wdt:P8 ?shelfmark ;
+           p:P5 ?holdingStatement .
+  ?holdingStatement pq:P4 ?holdingInst .
+  ?holdingInst rdfs:label ?holdingInstLabel .
+  
+  OPTIONAL {?holding wdt:P9 ?link_to_inst_record }
+  
+    
+BIND(CONCAT("https://search.digital-scriptorium.org/catalog/",?dsidLabel) AS ?ds_catalog_url)
+  
+# filter results by a period of time when records were last added
+FILTER ((?date_added_to_DS > "2024-08-15"^^xsd:dateTime) && (?date_added_to_DS < "2024-12-31"^^xsd:dateTime)).
+
+# filter results by a period of time when records were last updated
+FILTER ((?date_updated_in_DS > "2024-08-15"^^xsd:dateTime) && (?date_updated_in_DS < "2024-12-31"^^xsd:dateTime)).
+  
+  
+SERVICE wikibase:label {
+    bd:serviceParam wikibase:language "en" .
+  }
+
+  
+} ORDER BY DESC(?date_updated_in_DS)

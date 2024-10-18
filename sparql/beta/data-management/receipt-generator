@@ -1,0 +1,127 @@
+# prefixes
+PREFIX wd: <https://catalog.digital-scriptorium.org/entity/>
+PREFIX wds: <https://catalog.digital-scriptorium.org/entity/statement/>
+PREFIX wdv: <https://catalog.digital-scriptorium.org/value/>
+PREFIX wdt: <https://catalog.digital-scriptorium.org/prop/direct/>
+PREFIX p: <https://catalog.digital-scriptorium.org/prop/>
+PREFIX ps: <https://catalog.digital-scriptorium.org/prop/statement/>
+PREFIX pq: <https://catalog.digital-scriptorium.org/prop/qualifier/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT
+  # Variables for holding values used in the construction of the receipt
+  (?holderName as ?holding_institution) 
+  (?holder as ?ds_holding_inst_url)
+  (?dsid as ?ds_id)
+  (?manuscript as ?ds_manuscript_url)
+  (?shelfmark as ?holding_inst_shelfmark)
+  (?institutionalID as ?holding_inst_id)
+  (?linkToRecord as ?holding_inst_link)
+  (?iiifManifest as ?iiif_manifest)
+  (?holdingLabel as ?ds_holding)
+  (?holding as ?ds_holding_info_url)
+  (?dateAdded as ?date_added_to_ds) 
+  (?ds20RecordLabel as ?ds_record)
+  (?ds20Record as ?ds_record_url)
+  (?lastUpdated as ?ds_record_last_updated)
+{
+
+  # Specify a holding institution (remove comment tag)
+#  BIND (wd:Q16442 as ?holder) # bpl - Boston Public Library
+#  BIND (wd:Q28019 as ?holder) # burke - Burke Library at Union Theological Seminary 
+#  BIND (wd:Q27887 as ?holder) # columbia - Columbia University Rare Book and Manuscript Library
+#  BIND (wd:Q667 as ?holder) # conception - Conception Abbey and Seminary
+#  BIND (wd:Q825 as ?holder) # csl - California State Library
+#  BIND (wd:Q858 as ?holder) # cuny - City College of New York
+#  BIND (wd:Q48982 as ?holder) # cornell - Cornell University
+#  BIND (wd:Q18629 as ?holder) # flp - Free Library of Philadelphia
+#  BIND (wd:Q868 as ?holder) # grolier - Grolier Club
+#  BIND (wd:Q1487 as ?holder) # gts - General Theological Seminary
+#  BIND (wd:Q42438 as ?holder) # harvard - Harvard University
+#  BIND (wd:Q17632 as ?holder) # hrc - Harry Ransom Center
+#  BIND (wd:Q42439 as ?holder) # huntington - The Huntington
+#  BIND (wd:Q1521 as ?holder) # indiana - Indiana University
+#  BIND (wd:Q6060 as ?holder) # kansas - University of Kansas
+#  BIND (wd:Q42433 as ?holder) # missouri - University of Missouri
+#  BIND (wd:Q1123 as ?holder) # nelsonatkins - Nelson-Atkins Museum of Art
+#  BIND (wd:Q42265 as ?holder) # nyam - New York Academy of Medicine 
+#  BIND (wd:Q1914 as ?holder) # nyu - New York University
+#  BIND (wd:Q10856 as ?holder) # oregon - University of Oregon
+#  BIND (wd:Q42431 as ?holder) # osu - Ohio State University
+#  BIND (wd:Q374 as ?holder) # penn - University of Pennsylvania
+#  BIND (wd:Q12264 as ?holder) # princeton - Princeton University
+#  BIND (wd:Q801 as ?holder) # providence - Providence Public Library
+#  BIND (wd:Q1101 as ?holder) # rome - American Academy in Rome
+#  BIND (wd:Q1936 as ?holder) # rutgers - Rutgers University
+#  BIND (wd:Q27854 as ?holder) # shi - Science History Institute
+#  BIND (wd:Q42440 as ?holder) # slu - Saint Louis University
+#  BIND (wd:Q1247 as ?holder) # smith - Smith College
+#  BIND (wd:Q42437 as ?holder) # ucb - University of California, Berkeley
+#  BIND (wd:Q42441 as ?holder) # ucdavis - University of California, Davis
+#  BIND (wd:Q42442 as ?holder) # ucr - University of California, Riverside
+#  BIND (wd:Q17745 as ?holder) # vassar - Vassar College
+#  BIND (wd:Q42432 as ?holder) # vermont - University of Vermont
+#  BIND (wd:Q27869 as ?holder) # wmu - Western Michigan University
+  
+  # holding and holding properties
+  BIND ( wd:Q2 as ?holdingType )
+  BIND ( wdt:P16 as ?instanceOf )
+  BIND ( wdt:P2 as ?hasHolding )
+  BIND ( pq:P4 as ?qualifierHoldingInstInAuthFile )
+  BIND ( p:P5 as ?holdingInstitutionAsRecStmt )
+  BIND ( ps:P5 as ?holdingInstAsRecValue )
+  BIND ( wdt:P7 as ?hasInstID )
+  BIND ( wdt:P8 as ?hasShelfmark )
+  BIND ( wdt:P9 as ?hasLinkToInstRecord )
+  BIND ( wdt:P38 as ?hasHoldingAddedDate )
+  BIND ( wdt:P39 as ?hasHoldingEndDate )
+  
+  # manuscript properties
+  BIND ( wdt:P1 as ?hasDSID )
+  
+  # DS 2.0 Record properties
+  BIND ( wdt:P3 as ?describesManuscript )
+  BIND ( wdt:P35 as ?hasDateLastUpdated )
+  BIND ( wdt:P41 as ?hasIIIFManifest )
+
+
+  # holding information
+  ?holding ?instanceOf ?holdingType ;
+           ?holdingInstitutionAsRecStmt ?holdingInstStatement ;
+           ?hasHoldingAddedDate ?dateAdded .
+                      
+  OPTIONAL { ?holding ?hasInstID ?institutionalID }
+  OPTIONAL { ?holding ?hasShelfmark ?shelfmark }
+  OPTIONAL { ?holding ?hasLinkToInstRecord ?linkToRecord }
+
+  ?holdingInstStatement ?qualifierHoldingInstInAuthFie ?holder .
+  ?holder rdfs:label ?holderName .
+  
+  # finding linked manuscript objects to holding information patterns above
+  ?manuscript ?hasHolding ?holding ;
+              ?hasDSID ?dsid .
+  ?holding rdfs:label ?holdingLabel .
+  
+  # finding linked DS records to manuscript object patterns above
+  ?ds20Record ?describesManuscript ?manuscript ;
+              ?hasDateLastUpdated ?lastUpdated ;
+              rdfs:label ?ds20RecordLabel .
+
+  # filter results by a period of time when records were last updated
+  #FILTER ((?lastUpdated > "2024-01-01"^^xsd:dateTime) && (?lastUpdated < "2025-01-01"^^xsd:dateTime)).
+  
+  # display IIIF manifest URLs if present
+  OPTIONAL { ?ds20Record ?hasIIIFManifest ?iiifManifest }
+
+  # get alphanumerical IDs from Wikibase URIs
+  BIND (STRDT(REPLACE(STR(?holder), "http.+/entity/", ""), xsd:integer) as ?holderQID)
+  BIND (STRDT(REPLACE(STR(?holding), "http.+/entity/", ""), xsd:integer) as ?holdingQID)
+  BIND (STRDT(REPLACE(STR(?manuscript), "http.+/entity/", ""), xsd:integer) as ?manuscriptQID) 
+  
+  SERVICE wikibase:label {
+    bd:serviceParam wikibase:language "en" .
+      # allows English language labels to be returned for Wikibase items
+  }
+} ORDER BY DESC(?lastUpdated) ASC(?shelfmark)
+  # sort results by date updated in Wikibase and then by shelfmark

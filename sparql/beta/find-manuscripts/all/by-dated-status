@@ -1,0 +1,29 @@
+# prefixes
+PREFIX wd: <https://catalog.digital-scriptorium.org/entity/>
+PREFIX wds: <https://catalog.digital-scriptorium.org/entity/statement/>
+PREFIX wdv: <https://catalog.digital-scriptorium.org/value/>
+PREFIX wdt: <https://catalog.digital-scriptorium.org/prop/direct/>
+PREFIX p: <https://catalog.digital-scriptorium.org/prop/>
+PREFIX ps: <https://catalog.digital-scriptorium.org/prop/statement/>
+PREFIX pq: <https://catalog.digital-scriptorium.org/prop/qualifier/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+# find manuscript records with dated or non-dated status
+SELECT ?record ?recordLabel ?dateString ?datedStatusLabel
+WHERE {
+# bind query variables
+  BIND(p:P23 AS ?dateAsRecordedStatement).
+  BIND(ps:P23 AS ?dateAsRecorded).
+  BIND(wdt:P26 AS ?hasDatedStatus).
+
+# statement: record has statement for dated classification
+  ?record ?hasDatedStatus ?datedStatus .
+# statement: manuscript record may have statement for date of production
+  OPTIONAL { ?record ?dateAsRecordedStatement ?dateStatement .  ?dateStatement ?dateAsRecorded ?dateString . }
+
+# return English language labels
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE]".
+  }
+  }
+ORDER BY ?recordLabel

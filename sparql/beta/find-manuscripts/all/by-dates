@@ -1,0 +1,47 @@
+# prefixes
+PREFIX wd: <https://catalog.digital-scriptorium.org/entity/>
+PREFIX wds: <https://catalog.digital-scriptorium.org/entity/statement/>
+PREFIX wdv: <https://catalog.digital-scriptorium.org/value/>
+PREFIX wdt: <https://catalog.digital-scriptorium.org/prop/direct/>
+PREFIX p: <https://catalog.digital-scriptorium.org/prop/>
+PREFIX ps: <https://catalog.digital-scriptorium.org/prop/statement/>
+PREFIX pq: <https://catalog.digital-scriptorium.org/prop/qualifier/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+# find manuscript records by dates of production as well as records without date information
+SELECT ?record ?recordLabel
+(GROUP_CONCAT(?dateString;separator="|") as ?datesAsRecorded)
+(GROUP_CONCAT(?earliestDateYear;separator="|") as ?earliestDates)
+(GROUP_CONCAT(?latestDateYear;separator="|") as ?latestDates)
+
+WHERE {
+# bind query variables
+  BIND(p:P23 AS ?dateAsRecordedStatement).
+  BIND(ps:P23 AS ?dateAsRecorded).
+  BIND(pq:P37 AS ?hasEarliestDate).
+  BIND(pq:P36 AS ?hasLatestDate).
+  BIND(wdt:P44 AS ?hasExternalID).
+
+# manuscript record is instance of DS record
+  ?record wdt:P16 wd:Q3 .
+  OPTIONAL {
+# statement: manuscript record has statement for date of production
+  ?record ?dateAsRecordedStatement ?dateStatement .
+# statement: date statement has date object recorded as string value
+  ?dateStatement ?dateAsRecorded ?dateString .
+# statement: date statement has qualifier for earliest date
+  ?dateStatement ?hasEarliestDate ?earliestDateValue .
+# statement: date statement has qualifier for latest date
+  ?dateStatement ?hasLatestDate ?latestDateValue .
+    }
+# render date values as years
+  BIND(year(?earliestDateValue) AS ?earliestDateYear)
+  BIND(year(?latestDateValue) AS ?latestDateYear)
+
+# return English language labels
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en".
+  }
+  }
+GROUP BY ?record ?recordLabel
+ORDER BY ?recordLabel

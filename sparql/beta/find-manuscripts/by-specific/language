@@ -1,0 +1,36 @@
+# prefixes
+PREFIX wd: <https://catalog.digital-scriptorium.org/entity/>
+PREFIX wds: <https://catalog.digital-scriptorium.org/entity/statement/>
+PREFIX wdv: <https://catalog.digital-scriptorium.org/value/>
+PREFIX wdt: <https://catalog.digital-scriptorium.org/prop/direct/>
+PREFIX p: <https://catalog.digital-scriptorium.org/prop/>
+PREFIX ps: <https://catalog.digital-scriptorium.org/prop/statement/>
+PREFIX pq: <https://catalog.digital-scriptorium.org/prop/qualifier/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+# find manuscript records for manuscripts in particular language(s)
+SELECT ?record ?recordLabel ?languageString (GROUP_CONCAT(?languageLabel;separator="|") as ?languages)
+WHERE { 
+# set variable value for language or languages to be queried
+  VALUES ?language { wd:Q12711 wd:Q12712 wd:Q12715 } # Japanese, Korean, and Chinese
+# bind query variables
+  BIND(p:P21 AS ?languageAsRecordedStatement).
+  BIND(ps:P21 AS ?languageAsRecorded).
+  BIND(pq:P22 AS ?hasLanguage).
+  
+# statement: manuscript record has statement for language
+  ?record ?languageAsRecordedStatement ?languageStatement .
+# statement: language statement has language object recorded as string value
+  ?languageStatement ?languageAsRecorded ?languageString .
+# statement: language statement has qualifier for structured/authority value
+  ?languageStatement ?hasLanguage ?language .
+
+# return English language labels
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en".
+    ?record rdfs:label ?recordLabel .
+    ?language rdfs:label ?languageLabel .
+  }
+  }
+GROUP BY ?record ?recordLabel ?languageString
+ORDER BY ?recordLabel
